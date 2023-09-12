@@ -143,7 +143,7 @@ const Login = () => {
             value={email}
             onChange={formChange}
             placeholder="Enter Your Email"
-            className={`pl-[4rem] py-5 block  border-2  mt-[2rem] overflow-visible authip w-[36.5rem] border-violet-700 focus:border-green-500 ${emailIsValid?"":"focus:border-red-500"}`}
+            className={`pl-[4rem] py-5 block  border-2   overflow-visible authip w-[36.5rem] border-violet-700 focus:border-green-500 ${emailIsValid?"":"focus:border-red-500"}`}
             style={{
               fontSize: "1.1rem",
             }}
@@ -157,7 +157,7 @@ const Login = () => {
           </p>
           <FontAwesomeIcon
             icon={faLock}
-            className="absolute ml-[2rem] mt-[3.5rem] text-lg"
+            className="absolute ml-[2rem] mt-[1.5rem] text-lg"
           />
           <input
             id="password"
@@ -166,7 +166,7 @@ const Login = () => {
             value={password}
             onChange={formChange}
             placeholder="Enter Your Password"
-            className={`pl-[4rem] py-5 block border-2  border-violet-700 focus:border-green-500 mt-[2rem] authip w-[36.5rem] ${passIsValid?"":"focus:border-red-500"}`}
+            className={`pl-[4rem] py-5 block border-2  border-violet-700 focus:border-green-500 authip w-[36.5rem] ${passIsValid?"":"focus:border-red-500"}`}
             style={{
               fontSize: "1.1rem",
             }}

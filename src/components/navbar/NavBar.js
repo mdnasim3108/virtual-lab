@@ -18,7 +18,7 @@ export default function NavBar({ fixed }) {
             <a
               className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
             >
-             BRSR Template
+             Virtual lab
             </a>
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
@@ -40,7 +40,7 @@ export default function NavBar({ fixed }) {
                 <a
                   className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
                >
-                  <i className="fab fa-facebook-square text-lg leading-lg text-white opacity-75"></i><span className="ml-2" style={{cursor:"pointer"}} onClick={()=>{navigate('/sectionA')}}>Section A</span>
+                  <i className="fab fa-facebook-square text-lg leading-lg text-white opacity-75"></i><span className="ml-2" style={{cursor:"pointer"}} onClick={()=>{navigate('/sectionA')}}>Dashboard</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -48,7 +48,7 @@ export default function NavBar({ fixed }) {
                   className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
               
                 >
-                  <i className="fab fa-twitter text-lg leading-lg text-white opacity-75"></i><span className="ml-2" style={{cursor:"pointer"}} onClick={()=>{navigate('/sectionB')}}>Section B</span>
+                  <i className="fab fa-twitter text-lg leading-lg text-white opacity-75"></i><span className="ml-2" style={{cursor:"pointer"}} onClick={()=>{navigate('/sectionB')}}>Profile</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -56,7 +56,7 @@ export default function NavBar({ fixed }) {
                   className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
                 
                 >
-                  <i className="fab fa-pinterest text-lg leading-lg text-white opacity-75"></i><span className="ml-2" style={{cursor:"pointer"}} onClick={()=>{navigate('/sectionC/principle1')}}> Section C</span>
+                  <i className="fab fa-pinterest text-lg leading-lg text-white opacity-75"></i><span className="ml-2" style={{cursor:"pointer"}} onClick={()=>{navigate('/')}}>Logout</span>
                 </a>
               </li>
             </ul>

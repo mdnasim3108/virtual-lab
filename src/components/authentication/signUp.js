@@ -119,9 +119,10 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    roll:"", 
   });
 
-  const { firstName, lastName, email, password, confirmPassword } = formData;
+  const { firstName, lastName, email, password, confirmPassword,roll } = formData;
 
   const formChange = (e) => {
     setFormData((previousState) => ({
@@ -145,6 +146,7 @@ const SignUp = () => {
         email,
         password
       );
+      toastifySuccess();
       const user = userCredentials.user;
       console.log(user);
 
@@ -160,10 +162,6 @@ const SignUp = () => {
       delete formDatacopy.password;
       delete formDatacopy.confirmPassword;
       console.log("Details updated ");
-      await setDoc(doc(db, "users", user.uid), formDatacopy);
-      await axios.post("http://localhost:4000/createCustomer",{email})
-      .then((res)=>console.log(res.data))
-      toastifySuccess();
     } catch (error) {
       console.log(error);
       toastifyFailure();
@@ -260,7 +258,7 @@ const SignUp = () => {
               <option value="Others">Others</option>
             </select>
           </div> */}
-      
+
           {/* <PhoneInput
             defaultCountry="IN"
             value={value}
@@ -309,6 +307,24 @@ const SignUp = () => {
               <p className="relative bottom-[1.2rem]">Verify OTP</p>
             </button>
           </div> */}
+
+          <div>
+            <FontAwesomeIcon
+              icon={faUser}
+              className="absolute ml-[2rem] mt-[1.7rem] text-lg"
+            />
+            <input
+              id="roll"
+              value={roll}
+              name="roll"
+              placeholder="Enter Your Roll number"
+              className="pl-[4rem] py-5 block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-[41.4rem]"
+              style={{ fontSize: "1.1rem" }}
+              onChange={formChange}
+              required
+            />
+          </div>
+
           <div>
             <FontAwesomeIcon
               icon={faUser}

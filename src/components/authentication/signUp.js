@@ -3,13 +3,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import "./login.css";
-import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import { AiFillEyeInvisible, AiFillEye, AiOutlineLock } from "react-icons/ai";
 import axios from "axios";
+import {GrGroup} from "react-icons/gr"
+import { api } from "../../constants";
+import { DownOutlined } from "@ant-design/icons";
+import nameIcon from "../../assets/iconName.png";
+import { UserOutlined,MailOutlined } from "@ant-design/icons";
+import { faHashtag,faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import {
   faUser,
   faLock,
   // faBuilding,
   faCheck,
+  faCaretDown,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   getAuth,
@@ -114,15 +121,15 @@ const SignUp = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    companyCode: "",
-    companyPosition: "",
     email: "",
     password: "",
     confirmPassword: "",
-    roll:"", 
+    roll: "",
+    batch: "1",
   });
 
-  const { firstName, lastName, email, password, confirmPassword,roll } = formData;
+  const { firstName, lastName, email, password, confirmPassword, roll, batch } =
+    formData;
 
   const formChange = (e) => {
     setFormData((previousState) => ({
@@ -141,27 +148,35 @@ const SignUp = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log();
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
+      const response = await axios.post(`${api}/auth/local/register`, {
+        name: firstName + " " + lastName,
+        username: firstName + " " + lastName,
+        email: email,
+        password: password,
+        roll,
+        batch: +batch,
+      });
       toastifySuccess();
-      const user = userCredentials.user;
-      console.log(user);
-
-      if (user) {
-        updateProfile(auth.currentUser, {
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-        });
-      }
-      console.log(user.uid);
-      const formDatacopy = { ...formData, phoneNumber: value };
-      console.log(formDatacopy);
-      delete formDatacopy.password;
-      delete formDatacopy.confirmPassword;
-      console.log("Details updated ");
+      // const user = userCredentials.user;
+      // console.log(user);
+      // if (user) {
+      //   updateProfile(auth.currentUser, {
+      //     displayName: user.displayName,
+      //     photoURL: user.photoURL,
+      //   });
+      // }
+      // console.log(user.uid);
+      // const formDatacopy = { ...formData, phoneNumber: value };
+      // console.log(formDatacopy);
+      // delete formDatacopy.password;
+      // delete formDatacopy.confirmPassword;
+      // console.log("Details updated ");
     } catch (error) {
       console.log(error);
       toastifyFailure();
@@ -208,26 +223,33 @@ const SignUp = () => {
     <Fragment>
       <div className="loginForm">
         <form onSubmit={onSubmit}>
-          <input
-            id="firstName"
-            placeholder="First Name"
-            name="FirstName"
-            value={firstName}
-            className="pl-[4rem] py-5 inline  mb-[1rem] mr-[0.4rem] border-2  border-violet-700 focus:border-green-500 authip w-[20.5rem] "
-            style={{ fontSize: "1.1rem" }}
-            onChange={formChange}
-            required
-          />
-          <input
-            id="lastName"
-            placeholder="Last Name"
-            name="LastName"
-            value={lastName}
-            className="pl-[4rem] py-5 inline  border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-[20.5rem]"
-            style={{ fontSize: "1.1rem" }}
-            onChange={formChange}
-            required
-          />
+          <div className="w-[20.5rem] inline-block mr-[0.4rem]">
+            <UserOutlined className="absolute ml-[2rem] mt-[1.3rem] text-lg text-gray-600"/>
+            <input
+              id="firstName"
+              placeholder="First Name"
+              name="FirstName"
+              value={firstName}
+              className="pl-[4rem] py-5   mb-[1rem]  border-2  border-violet-700 focus:border-green-500 authip w-full "
+              style={{ fontSize: "1.1rem" }}
+              onChange={formChange}
+              required
+            />
+          </div>
+          <div className="w-[20.5rem] inline-block">
+          <UserOutlined className="absolute ml-[2rem] mt-[1.3rem] text-lg text-gray-600"/>
+            <input
+              id="lastName"
+              placeholder="Last Name"
+              name="LastName"
+              value={lastName}
+              className="pl-[4rem] py-5  border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full"
+              style={{ fontSize: "1.1rem" }}
+              onChange={formChange}
+              required
+            />
+          </div>
+
           {/* <div>
             <FontAwesomeIcon
               icon={faBuilding}
@@ -310,8 +332,8 @@ const SignUp = () => {
 
           <div>
             <FontAwesomeIcon
-              icon={faUser}
-              className="absolute ml-[2rem] mt-[1.7rem] text-lg"
+              icon={faHashtag}
+              className="absolute ml-[2rem] mt-[1.7rem] text-lg text-gray-600"
             />
             <input
               id="roll"
@@ -326,9 +348,8 @@ const SignUp = () => {
           </div>
 
           <div>
-            <FontAwesomeIcon
-              icon={faUser}
-              className="absolute ml-[2rem] mt-[1.7rem] text-lg"
+            <MailOutlined
+              className="absolute ml-[2rem] mt-[1.3rem] text-lg text-gray-600"
             />
             <input
               id="email"
@@ -359,9 +380,9 @@ const SignUp = () => {
             )}
           </div>
           <div>
-            <FontAwesomeIcon
-              icon={faLock}
-              className="absolute ml-[2rem] mt-[1.7rem] text-lg"
+            
+            <AiOutlineLock
+              className="absolute ml-[2rem] mt-[1.7rem] text-2xl text-gray-600"
             />
             <input
               id="password"
@@ -377,7 +398,7 @@ const SignUp = () => {
             />
           </div>
           <div>
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               icon={faCheck}
               className="absolute ml-[2rem] mt-[1.7rem] text-xl text-red-600"
               style={isEqual ? { color: "green" } : {}}
@@ -400,7 +421,22 @@ const SignUp = () => {
               style={{ visibility: isEqual ? "hidden" : "visible" }}
             >
               Passwords don't match
-            </p>
+            </p> */}
+            <GrGroup  className="absolute ml-[2rem] mt-[1.4rem] text-lg text-gray-300"/>
+            <div className=" h-0 flex justify-end pr-[2rem]">
+              <DownOutlined className="text-[1.3rem] text-violet-800 relative top-[1.4rem] cursor-pointer" />
+            </div>
+            <select
+              id="batch"
+              class="mb-[1rem] custom-select authip border-2  border-violet-700 focus:border-green-500 text-gray-500 text-sm  focus:ring-blue-500  py-5 pl-[4rem]  dark:focus:ring-blue-500 dark:focus:border-blue-500 inline w-full"
+              style={{ fontSize: "1.1rem" }}
+              onChange={formChange}
+            >
+              <option selected value="1">
+                Batch 1
+              </option>
+              <option value="2">Batch 2</option>
+            </select>
           </div>
           <div
             className="logFormBottom mt-2 flex"

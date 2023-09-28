@@ -7,6 +7,17 @@
   pointer-events: none;
 }
 
+.custom-select {
+  -webkit-appearance: none; /* Webkit (Safari, Chrome) */
+  -moz-appearance: none; /* Firefox */
+  appearance: none; /* Standard browsers */
+  background-image: none; /* Remove default arrow icon */
+  background-color: transparent; /* Make background transparent */
+  padding-right: 20px; /* Add some padding for a custom indicator */
+}
+
+
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

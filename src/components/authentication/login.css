@@ -102,15 +102,34 @@ input:focus{
 @keyframes authAnim{
     from{
         opacity: 0;
-        margin-right: 7rem;
+        position: relative;
+        right: 5rem;
     }
     to{
         opacity: 1;
-        margin-right:0rem;
+        position: relative;
+        right:0rem;
+    }
+}
+
+@keyframes logAnim{
+    from{
+        opacity: 0;
+        position: relative;
+        left: 5rem;
+    }
+    to{
+        opacity: 1;
+        position: relative;
+        left:0rem;
     }
 }
 .loginForm{
     animation: authAnim 500ms;
+}
+
+.logForm{
+    animation: logAnim 500ms;
 }
 .PhoneInput{
     border: 1.8px solid blueviolet;

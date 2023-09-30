@@ -1,11 +1,30 @@
-import { Table } from "antd";
+import { Table,Spin } from "antd";
+import axios from "axios";
+import { useState,useEffect } from "react";
+import {api} from "../../constants"
 const Experiments = () => {
+  const [exp,setExp]=useState([])
+  useEffect(()=>{
+    axios.get(`${api}/experiments`).then((res)=>{
+      setExp(res.data.data.map((exp)=>{
+        return {
+          key:exp.id,
+          expNo:exp.id,
+          expTitle:exp.attributes.Experiment_Name,
+          expDesc:exp.attributes.Description,
+          Due:exp.attributes.Due_Date,
+          expLink:<a href="/" className="underline">do Experiment</a>
+        }
+      }))
+    })
+  },[])
   const dataSource = [
     {
       key: "1",
       expNo: "1",
       expTitle: "addition of two numbers",
       expDesc: "read two numbers from the input stream and print their sum",
+      Due:"	2023-09-24 15:30:45",
       expLink:<a href="/" className="underline">do Experiment</a>
     },
     {
@@ -13,6 +32,7 @@ const Experiments = () => {
         expNo: "2",
         expTitle: "addition of two numbers",
         expDesc: "read two numbers from the input stream and print their sum",
+        Due:"	2023-09-24 15:30:45",
         expLink:<a href="/" className="underline">do Experiment</a>
     },
       {
@@ -20,6 +40,7 @@ const Experiments = () => {
         expNo: "3",
         expTitle: "addition of two numbers",
         expDesc: "read two numbers from the input stream and print their sum",
+        Due:"	2023-09-24 15:30:45",
         expLink:<a href="/" className="underline">do Experiment</a>
     },
       {
@@ -27,6 +48,7 @@ const Experiments = () => {
         expNo: "4",
         expTitle: "addition of two numbers",
         expDesc: "read two numbers from the input stream and print their sum",
+        Due:"	2023-09-24 15:30:45",
         expLink:<a href="/" className="underline">do Experiment</a>
     },
     {
@@ -34,52 +56,9 @@ const Experiments = () => {
         expNo: "5",
         expTitle: "addition of two numbers",
         expDesc: "read two numbers from the input stream and print their sum",
+        Due:"	2023-09-24 15:30:45",
         expLink:<a href="/" className="underline">do Experiment</a>
     },
-    {
-        key: "6",
-        expNo: "6",
-        expTitle: "addition of two numbers",
-        expDesc: "read two numbers from the input stream and print their sum",
-        expLink:<a href="/" className="underline">do Experiment</a>
-    },
-    {
-        key: "7",
-        expNo: "7",
-        expTitle: "addition of two numbers",
-        expDesc: "read two numbers from the input stream and print their sum",
-        expLink:<a href="/" className="underline">do Experiment</a>
-    },
-    {
-        key: "8",
-        expNo: "8",
-        expTitle: "addition of two numbers",
-        expDesc: "read two numbers from the input stream and print their sum",
-        expLink:<a href="/" className="underline">do Experiment</a>
-    },
-  
-    {
-        key: "9",
-        expNo: "9",
-        expTitle: "addition of two numbers",
-        expDesc: "read two numbers from the input stream and print their sum",
-        expLink:<a href="/" className="underline">do Experiment</a>
-    },
-    {
-        key: "10",
-        expNo: "10",
-        expTitle: "addition of two numbers",
-        expDesc: "read two numbers from the input stream and print their sum",
-        expLink:<a href="/" className="underline">do Experiment</a>
-    },
-    {
-        key: "11",
-        expNo: "11",
-        expTitle: "addition of two numbers",
-        expDesc: "read two numbers from the input stream and print their sum",
-        expLink:<a href="/" className="underline">do Experiment</a>
-    },
-    
   ];
 
   const columns = [
@@ -96,10 +75,16 @@ const Experiments = () => {
       width:"20%"
     },
     {
-      title: "Exp Description",
+      title: "Description",
       dataIndex: "expDesc",
       key: "expDesc",
-      width:"50%"
+      width:"30%"
+    },
+    {
+      title: "Due Date",
+      dataIndex: "Due",
+      key: "Due",
+      width:"20%"
     },
     {
       title: "Exp Link",
@@ -109,8 +94,9 @@ const Experiments = () => {
     },
   ];
   return (
+    <Spin spinning={exp.length===0}>
     <div className="w-full h-[calc(100vh-70px)] pt-[1rem]  bg-gray-100"> 
-      <Table dataSource={dataSource} columns={columns} className="w-full m-0 scrollable-element"  pagination={{
+      <Table dataSource={exp} columns={columns} className="w-full m-0 scrollable-element"  pagination={{
       style:{visibility:"hidden"}
     }}
     scroll={{
@@ -118,6 +104,7 @@ const Experiments = () => {
     }}
      />
     </div>
+    </Spin>
   );
 };
 export default Experiments;

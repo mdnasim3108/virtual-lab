@@ -5,6 +5,7 @@ import { Cookies } from "react-cookie";
 const ContextProvider=(props)=>{
     const cookies=new Cookies()
     const [user,setUser]=useState(null)
+    const [experiments,setExperiments]=useState([])
     const fetchUser=async()=>{
         const res = await axios.get(
             `http://localhost:1337/api/users?filters[email][$eqi]=${cookies.get("user")}&populate=*`
@@ -14,7 +15,9 @@ const ContextProvider=(props)=>{
     }
     const contextValues={
         user,
-        setUser
+        setUser,
+        experiments,
+        setExperiments
     }
     useEffect(()=>{
         if(cookies.get("user")){

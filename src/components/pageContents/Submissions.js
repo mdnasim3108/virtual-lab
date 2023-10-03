@@ -1,5 +1,28 @@
 import { Space, Table, Tag } from "antd";
+import { useContext, useEffect, useState } from "react";
+import { api } from "../../constants";
+import userContext from "../../contextStore/context";
+import axios from "axios";
 const Submissions = () => {
+  const {user,experiments}=useContext(userContext)
+  const [submissions,setSubmissions] = useState([])
+  useEffect(()=>{
+    axios.get(`${api}/submissions?filters[roll][$eqi]=${user.roll}&populate=*`).then((response)=>{
+      setSubmissions(response.data.data[0].attributes.Experiments.map((sub)=>{
+          const id=experiments.findIndex((el)=>el.expNo===sub.ExpNo)
+          const exp=experiments[id]
+          console.log(exp)
+          return {
+            key: sub.ExpNo,
+            expId: sub.ExpNo,
+            expName: exp.expTitle,
+            lastSub: sub.Submitted_Date,
+            status:"graded",
+            timeliness:new Date(sub.Submitted_Date)<new Date(exp.Due)?"timely":"overdue"
+          }
+      }))
+    })
+  },[])
   const columns = [
     {
       title: "Experiment Id",
@@ -91,15 +114,16 @@ const Submissions = () => {
       },
   ];
   return (
-    <div className="w-full h-[calc(100vh-70px)] pt-[1rem]  bg-gray-100"> 
-      <Table dataSource={data} columns={columns} className="w-full m-0"  pagination={{
+    submissions.length?<div className="w-full h-[calc(100vh-70px)] pt-[1rem]  bg-gray-100"> 
+      <Table dataSource={submissions} columns={columns} className="w-full m-0"  pagination={{
       style:{visibility:"hidden"}
     }}
     scroll={{
         y:450
     }}
      />
-    </div>
+    </div>:
+    <p>loading</p>
   );
 };
 export default Submissions

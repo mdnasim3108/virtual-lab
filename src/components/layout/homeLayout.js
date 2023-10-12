@@ -3,17 +3,21 @@ import SideMenu from "../dashboard/menu";
 import { Space } from "antd";
 import PrivateRoute from "../../privateRoute";
 const homeLayout = (props) => {
-  
-    return (
-      <PrivateRoute>
-      <div className="flex flex-col w-full h-[100vh]">
-        <Header />
-        <Space className="flex flex-1 justify-start items-start w-full h-full ">
+
+  return (
+    <PrivateRoute>
+      <div className="flex  w-full h-[100vh]">
+        <div className="flex flex-col">
+          <Header />
           <SideMenu />
+        </div>
+
+        <div className="h-screen w-full">
           {props.children}
-        </Space>
+        </div>
+
       </div>
-      </PrivateRoute>
-    );
+    </PrivateRoute>
+  );
 };
 export default homeLayout;

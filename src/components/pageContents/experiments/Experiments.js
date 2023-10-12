@@ -1,14 +1,50 @@
 import { Table, Spin } from "antd";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
-import { api } from "../../constants";
-import userContext from "../../contextStore/context";
+import { api } from "../../../constants";
+import userContext from "../../../contextStore/context";
+import useHttp from "../../../hooks/use-http";
+import { useNavigate } from "react-router";
 const Experiments = () => {
-  const { setExperiments,experiments } = useContext(userContext);
+  const navigate = useNavigate()
+  const { setExperiments, experiments, setKeys, setSelected, progress } = useContext(userContext);
+  const { loading, data, error } = useHttp({ url: `${api}/experiments`, method: "GET" })
+  // useEffect(() => {
+  //   if(!experiments.length){
+  //   axios.get(`${api}/experiments`).then((res) => {
+  //     const experiments = res.data.data.map((exp) => {
+  //       return {
+  //         key: exp.id,
+  //         expNo: exp.id,
+  //         expTitle: exp.attributes.Experiment_Name,
+  //         expDesc: exp.attributes.Description,
+  //         Due: exp.attributes.Due_Date,
+  //         expLink: (
+  //           <a href="/" className="underline">
+  //             do Experiment
+  //           </a>
+  //         ),
+  //       };
+  //     });
+  //     setExperiments(experiments);
+  //   })
+  // }
+  // }, []);
   useEffect(() => {
-    if(!experiments.length){
-    axios.get(`${api}/experiments`).then((res) => {
-      const experiments = res.data.data.map((exp) => {
+    if (data) {
+      console.log(progress)
+
+      console.log(data.data)
+
+      const experiments = data.data.map((exp) => {
+
+        let code
+        const id = progress.findIndex((el) => el.experiment === exp.attributes.ExperimentNo)
+        console.log(id)
+
+        if (id >= 0) {
+          code = progress[id].codeId
+        }
         return {
           key: exp.id,
           expNo: exp.id,
@@ -16,16 +52,20 @@ const Experiments = () => {
           expDesc: exp.attributes.Description,
           Due: exp.attributes.Due_Date,
           expLink: (
-            <a href="/" className="underline">
+            <p onClick={() => {
+              setSelected({ name: exp.attributes.Experiment_Name, no: +(exp.id) })
+              setKeys("/editor")
+              navigate(`/editor/${code ? code : "12345"}`)
+            }} className="underline cursor-pointer">
               do Experiment
-            </a>
+            </p>
           ),
         };
       });
       setExperiments(experiments);
-    })
-  }
-  }, []);
+    }
+  }, [data])
+
   const dataSource = [
     {
       key: "1",
@@ -123,12 +163,11 @@ const Experiments = () => {
   ];
   return (
     <Spin spinning={experiments.length === 0}>
-      <div className="w-full h-[calc(100vh-70px)] pt-[1rem]  bg-gray-100">
+      <div className="w-full h-screen pt-[1rem]  bg-gray-100">
         <Table
           dataSource={experiments}
           columns={columns}
-          className="w-full m-0 scrollable-element"
-          pagination={{
+          className="w-[95%] mx-auto" pagination={{
             style: { visibility: "hidden" },
           }}
           scroll={{

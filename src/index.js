@@ -9,18 +9,16 @@ import {
 } from "react-router-dom";
 import ContextProvider from "./contextStore/contextProvider";
 import Auth from "./components/authentication/auth";
-import Dashboard from "./components/pageContents/Dashboard";
-import Classmates from "./components/pageContents/Classmates";
-import Courses from "./components/pageContents/Courses";
-import Experiments from "./components/pageContents/Experiments";
-import Profile from "./components/pageContents/Profile";
-import Submissions from "./components/pageContents/Submissions";
-import Teachers from "./components/pageContents/Teachers";
-import Grades from "./components/pageContents/grades";
-import Header from "./components/dashboard/header";
-import { Space } from "antd";
-import SideMenu from "./components/dashboard/menu";
+import Dashboard from "./components/pageContents/dashboard/Dashboard";
+import Classmates from "./components/pageContents/classmates/Classmates";
+import Courses from "./components/pageContents/courses/Courses";
+import Experiments from "./components/pageContents/experiments/Experiments";
+import Profile from "./components/pageContents/profile/Profile";
+import Submissions from "./components/pageContents/submissions/Submissions";
+import Teachers from "./components/pageContents/teachers/Teachers";
+import Grades from "./components/pageContents/grades/grades";
 import HomeLayout from "./components/layout/homeLayout";
+import Editor from "./components/pageContents/editor/editor";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -87,6 +85,14 @@ const router = createBrowserRouter([
     element: (
       <HomeLayout>
         <Grades />
+      </HomeLayout>
+    ),
+  },
+  {
+    path: "/editor/:id",
+    element: (
+      <HomeLayout>
+        <Editor />
       </HomeLayout>
     ),
   },

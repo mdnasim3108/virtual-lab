@@ -7,21 +7,26 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Menu, Space, Typography } from "antd";
+import { Menu, Space, Typography, Button } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers, faChalkboardUser ,faMarker} from "@fortawesome/free-solid-svg-icons";
+import { faUsers, faChalkboardUser, faMarker, faCode } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import userContext from "../../contextStore/context";
+import { Cookies } from "react-cookie";
+
 const SideMenu = (props) => {
   const navigate = useNavigate();
+  const cookies = new Cookies()
+  const { keys, setKeys } = useContext(userContext)
   const items = [
     { label: "Dashboard", key: "/dashboard", icon: <AppstoreOutlined /> },
+    { label: "Experiments", key: "/experiments", icon: <CodeOutlined /> },
     {
       label: "Submissions",
       key: "/submissions",
       icon: <CheckSquareOutlined />,
     },
-    { label: "Experiments", key: "/experiments", icon: <CodeOutlined /> },
     // {label:"courses",key:"/courses",icon:<BookOutlined/>},
     { label: "profile", key: "/profile", icon: <UserOutlined /> },
     {
@@ -39,17 +44,31 @@ const SideMenu = (props) => {
       key: "/grades",
       icon: <FontAwesomeIcon icon={faMarker} />,
     },
+    {
+      label: "Editor",
+      key: "/editor/12345",
+      icon: <FontAwesomeIcon icon={faCode} />,
+    },
   ];
   return (
-    <div className="h-[calc(100vh-70px)] flex flex-col justify-between">
+    <div className="h-[calc(100vh-50px)] flex flex-col justify-between relative">
       <Menu
         items={items}
-        onClick={(item) => navigate(item.key)}
-        className="w-[15rem] h-full border-r-[3rem]"
+        onClick={(item) => {
+          setKeys([item.key])
+          navigate(item.key)
+        }}
+        className="w-[15rem] h-full border-r-[3rem] pt-5 "
         theme="dark"
+        selectedKeys={keys}
       >
-        
       </Menu>
+      <Button icon={<LogoutOutlined />} onClick={() => {
+        cookies.remove("user")
+        navigate("/")
+      }}
+        className="absolute bottom-5 right-[30%] text-white"
+      >Logout</Button>
     </div>
   );
 };

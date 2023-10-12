@@ -1,12 +1,4 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Classmates from "../pageContents/Classmates";
-import Courses from "../pageContents/Courses";
-import Dashboard from "../pageContents/Dashboard";
-import Experiments from "../pageContents/Experiments";
-import Profile from "../pageContents/Profile";
-import Submissions from "../pageContents/Submissions";
-import Teachers from "../pageContents/Teachers";
-import Grades from "../pageContents/grades";
+
 const HomeRouter = () => {
   return 
     // <div className="w-full h-full ">

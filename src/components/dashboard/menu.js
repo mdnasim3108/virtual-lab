@@ -53,7 +53,7 @@ const SideMenu = (props) => {
   return (
     <div className="h-[calc(100vh-50px)] flex flex-col justify-between relative">
       <Menu
-        items={items}
+        items={props.items}
         onClick={(item) => {
           setKeys([item.key])
           navigate(item.key)

@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import ContextProvider from "./contextStore/contextProvider";
 import Auth from "./components/authentication/auth";
-import Dashboard from "./components/pageContents/dashboard/Dashboard";
+import Dashboard from "./components/facultyPageContents/dashboard/Dashboard";
 import Classmates from "./components/pageContents/classmates/Classmates";
 import Courses from "./components/pageContents/courses/Courses";
 import Experiments from "./components/pageContents/experiments/Experiments";
@@ -19,6 +19,10 @@ import Teachers from "./components/pageContents/teachers/Teachers";
 import Grades from "./components/pageContents/grades/grades";
 import HomeLayout from "./components/layout/homeLayout";
 import Editor from "./components/pageContents/editor/editor";
+import TeacherDash from "./components/facultyPageContents/teacherDash";
+// import TDashboard from "./components/facultyPageContentspageContents/dashboard/Dashboard";
+
+// import TeacherDashboard from "./components/facultyPageContents/teacherDash";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -67,9 +71,9 @@ const router = createBrowserRouter([
   {
     path: "/submissions",
     element: (
-      <HomeLayout>
+       <HomeLayout>
         <Submissions />
-      </HomeLayout>
+      </HomeLayout> 
     ),
   },
   {
@@ -96,6 +100,15 @@ const router = createBrowserRouter([
       </HomeLayout>
     ),
   },
+  {
+    path: "/teacherDash",
+    element: (
+      <HomeLayout>
+        <TeacherDash />
+      </HomeLayout>
+    ),
+  },
+  
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

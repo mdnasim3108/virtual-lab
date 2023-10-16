@@ -52,7 +52,7 @@ const SideMenu = (props) => {
       icon: <FontAwesomeIcon icon={faCode} />,
     },
   ];
-  return (
+  return (  
     <div className="h-[calc(100vh-50px)] flex flex-col justify-between relative">
       <Menu
         items={items}

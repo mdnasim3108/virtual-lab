@@ -1,6 +1,6 @@
 const Classmates=()=>{
     return <div>
-        classmates
+        Progress
     </div>
 }
 export default Classmates

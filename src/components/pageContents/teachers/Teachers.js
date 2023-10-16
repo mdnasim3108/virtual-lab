@@ -1,6 +1,6 @@
 const Teachers=()=>{
     return <div>
-        Teachers
+        messages
     </div>
 }
 export default Teachers

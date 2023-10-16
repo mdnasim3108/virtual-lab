@@ -8,8 +8,9 @@ import { useParams } from "react-router";
 const Editor = () => {
 
     const { id } = useParams("id")
+    const [codeid, setcodeid] = useState(id)
     console.log(id)
-    const { experiments, selected, setSelected, user, progressUpdateHandler } = useContext(userContext)
+    const { experiments, selected, setSelected, user, progressUpdateHandler, progress } = useContext(userContext)
     console.log(experiments)
     console.log(selected)
     useEffect(() => {
@@ -23,11 +24,20 @@ const Editor = () => {
         });
     };
 
+    useEffect(() => {
+        console.log(progress)
+        console.log(selected)
+        const id = progress.findIndex((el) => +(el.experiment) === selected.no)
+        if (id >= 0) setcodeid(progress[id].codeId)
+        else setcodeid("12345")
+    }, [selected])
+
     const items = experiments.map((exp) => {
         return {
             key: exp.key,
             label: <p onClick={() => {
                 setSelected({ name: exp.expTitle, no: exp.expNo })
+
             }}>
                 {exp.expTitle}
             </p>
@@ -77,47 +87,49 @@ const Editor = () => {
             openNotificationWithIcon('success', 'Work submitted', 'Your work had been submitted sucessfully')
         })
     }
-    return <div className="w-full h-full relative">
-        {contextHolder}
-        <p className="text-lg font-semi-bold absolute top-[1.4vh] left-[30%]">
-            {selected.name}
-        </p>
-        <Dropdown menu={{ items }}>
-            <button className="absolute top-[1.4vh] right-[20%] w-max bg-blue-400 px-2 rounded shadow-xl z-10 py-1 text-white">
-                {selected.name.split(" ")[0] + " " + selected.name.split(" ")[1]}
-                <DownOutlined className="text-white w-5 ml-1" />
-            </button>
-        </Dropdown>
-        <iframe
-            id="oc-editor"
-            frameBorder="0"
-            height="450px"
-            src={`https://onecompiler.com/embed/python/${id}?codeChangeEvent=true&disableCopyPaste=true&hideTitle=true&hideNew=true&listenToEvents=true`}
-            width="100%"
-            className="h-screen"
-        ></iframe>
-        <Button className="absolute bottom-10 right-[20%]" onClick={submitHandler}>submit code</Button>
-        <Button className="absolute bottom-10 right-[10%]" onClick={() => {
-            if (code.id === "") {
-                openNotificationWithIcon('warning', 'Nothing to save', 'Everything up to date')
-                return
-            }
+    return <div>
+        <div className="w-full h-full relative">
+            {contextHolder}
+            <p className="text-lg font-semi-bold absolute top-[1.4vh] left-[30%]">
+                {selected.name}
+            </p>
+            <Dropdown menu={{ items }}>
+                <button className="absolute top-[1.4vh] right-[20%] w-max bg-blue-400 px-2 rounded shadow-xl z-10 py-1 text-white">
+                    {selected.name.split(" ")[0] + " " + selected.name.split(" ")[1]}
+                    <DownOutlined className="text-white w-5 ml-1" />
+                </button>
+            </Dropdown>
+            <iframe
+                id="oc-editor"
+                frameBorder="0"
+                height="450px"
+                src={`https://onecompiler.com/embed/python/${codeid}?codeChangeEvent=true&disableCopyPaste=true&hideTitle=true&hideNew=true&listenToEvents=true`}
+                width="100%"
+                className="h-screen"
+            ></iframe>
+            <Button className="absolute bottom-10 right-[20%]" onClick={submitHandler}>submit code</Button>
+            <Button className="absolute bottom-10 right-[10%]" onClick={() => {
+                if (code.id === "") {
+                    openNotificationWithIcon('warning', 'Nothing to save', 'Everything up to date')
+                    return
+                }
 
-            // if (out === "") {
-            //     openNotificationWithIcon('warning', 'Output required', 'Run the code atleast once to save your progress')
-            //     return
-            // }
+                // if (out === "") {
+                //     openNotificationWithIcon('warning', 'Output required', 'Run the code atleast once to save your progress')
+                //     return
+                // }
 
-            var iFrame = document.getElementById('oc-editor');
-            iFrame.contentWindow.postMessage({
-                eventType: 'triggerRun'
-            }, "*");
+                var iFrame = document.getElementById('oc-editor');
+                iFrame.contentWindow.postMessage({
+                    eventType: 'triggerRun'
+                }, "*");
 
-            progressUpdateHandler(selected.no, code.id)
-            openNotificationWithIcon('success', 'Progress saved', 'Your progress has been saved sucessfully')
+                progressUpdateHandler(selected.no, code.id)
+                openNotificationWithIcon('success', 'Progress saved', 'Your progress has been saved sucessfully')
 
 
-        }}>save progress</Button>
+            }}>save progress</Button>
+        </div>
     </div>
 }
 export default Editor

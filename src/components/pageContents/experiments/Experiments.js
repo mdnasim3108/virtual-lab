@@ -54,7 +54,7 @@ const Experiments = () => {
           expLink: (
             <p onClick={() => {
               setSelected({ name: exp.attributes.Experiment_Name, no: +(exp.id) })
-              setKeys("/editor")
+              setKeys(["/editor"]) 
               navigate(`/editor/${code ? code : "12345"}`)
             }} className="underline cursor-pointer">
               do Experiment

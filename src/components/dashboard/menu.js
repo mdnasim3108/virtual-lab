@@ -11,14 +11,16 @@ import { Menu, Space, Typography, Button } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faChalkboardUser, faMarker, faCode } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import userContext from "../../contextStore/context";
 import { Cookies } from "react-cookie";
-
 const SideMenu = (props) => {
   const navigate = useNavigate();
   const cookies = new Cookies()
-  const { keys, setKeys } = useContext(userContext)
+  const { keys, setKeys, progress, selected, selectedProgressId } = useContext(userContext)
+  console.log(progress)
+  console.log(selected)
+
   const items = [
     { label: "Dashboard", key: "/dashboard", icon: <AppstoreOutlined /> },
     { label: "Experiments", key: "/experiments", icon: <CodeOutlined /> },
@@ -37,7 +39,7 @@ const SideMenu = (props) => {
     {
       label: "Teachers",
       key: "/teachers",
-      icon: <FontAwesomeIcon icon={faChalkboardUser} />,
+      icon: <FontAwesomeIcon icon={faChalkboardUser} />,  
     },
     {
       label: "Grades",
@@ -46,7 +48,7 @@ const SideMenu = (props) => {
     },
     {
       label: "Editor",
-      key: "/editor/12345",
+      key: `/editor/${selectedProgressId ? selectedProgressId : "12345"}`,
       icon: <FontAwesomeIcon icon={faCode} />,
     },
   ];

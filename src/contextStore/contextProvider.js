@@ -11,6 +11,14 @@ const ContextProvider=(props)=>{
     const [keys, setKeys] = useState([window.location.pathname])
     const [selected, setSelected] = useState({ name: "client server communication", no: 1 })
     const [progress, setProgress] = useState([])
+    const [selectedProgressId, setSelectedProgressId] = useState("")
+
+    useEffect(() => {
+        if (selected.no && progress.length) {
+            const index = progress.findIndex((el) => selected.no === +(el.experiment))
+            setSelectedProgressId(progress[index].codeId)
+        }
+    }, [selected, progress])
     const progressUpdateHandler = async (no, codeId) => {
         let updated = [...progress]
         const id = updated.findIndex((el) => +(el.experiment) === no)
@@ -42,7 +50,9 @@ const ContextProvider=(props)=>{
         selected,
         setSelected,
         progress,
-        progressUpdateHandler
+        progressUpdateHandler,
+        selectedProgressId,
+        setSelectedProgressId
     }
     useEffect(()=>{
         if(cookies.get("user")){

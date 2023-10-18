@@ -1,4 +1,4 @@
-import { Table, Spin } from "antd";
+import { Table, Spin, Button } from "antd";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { api } from "../../../constants";
@@ -7,7 +7,7 @@ import useHttp from "../../../hooks/use-http";
 import { useNavigate } from "react-router";
 const Experiments = () => {
   const navigate = useNavigate()
-  const { setExperiments, experiments, setKeys, setSelected, progress } = useContext(userContext);
+  const { setExperiments, experiments, setKeys, setSelected, progress, addExperiment } = useContext(userContext);
   const { loading, data, error } = useHttp({ url: `${api}/experiments`, method: "GET" })
   // useEffect(() => {
   //   if(!experiments.length){
@@ -163,7 +163,7 @@ const Experiments = () => {
   ];
   return (
     <Spin spinning={experiments.length === 0}>
-      <div className="w-full h-screen pt-[1rem]  bg-gray-100">
+      <div className="w-full h-screen pt-[1rem]  bg-gray-100 text-center">
         <Table
           dataSource={experiments}
           columns={columns}

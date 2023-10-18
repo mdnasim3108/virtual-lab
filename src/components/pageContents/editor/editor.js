@@ -2,7 +2,7 @@ import { Button, Dropdown, notification } from "antd";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import userContext from "../../../contextStore/context";
 import { useParams } from "react-router";
 const Editor = () => {
@@ -78,6 +78,8 @@ const Editor = () => {
         const updated = [...exp.Experiments]
 
         updated[selected.no - 1] = { ...updated[selected.no - 1], code: code.content, outputContent: out }
+        console.log(code.content)
+        console.log(out)
         if (code.content === "" || out === "") {
             openNotificationWithIcon('warning', 'Output required', 'Run the code atleast once to submit your code')
             return
@@ -87,28 +89,26 @@ const Editor = () => {
             openNotificationWithIcon('success', 'Work submitted', 'Your work had been submitted sucessfully')
         })
     }
-    return <div>
-        <div className="w-full h-full relative">
+    return <div className="w-full h-[100vh]">
+        <div className="w-full h-[93%] relative">
             {contextHolder}
             <p className="text-lg font-semi-bold absolute top-[1.4vh] left-[30%]">
                 {selected.name}
             </p>
-            <Dropdown menu={{ items }}>
-                <button className="absolute top-[1.4vh] right-[20%] w-max bg-blue-400 px-2 rounded shadow-xl z-10 py-1 text-white">
-                    {selected.name.split(" ")[0] + " " + selected.name.split(" ")[1]}
-                    <DownOutlined className="text-white w-5 ml-1" />
-                </button>
-            </Dropdown>
+
             <iframe
                 id="oc-editor"
                 frameBorder="0"
                 height="450px"
                 src={`https://onecompiler.com/embed/python/${codeid}?codeChangeEvent=true&disableCopyPaste=true&hideTitle=true&hideNew=true&listenToEvents=true`}
                 width="100%"
-                className="h-screen"
+                className="h-full"
             ></iframe>
-            <Button className="absolute bottom-10 right-[20%]" onClick={submitHandler}>submit code</Button>
-            <Button className="absolute bottom-10 right-[10%]" onClick={() => {
+
+        </div>
+        <div className="w-full h-[7%] flex items-center justify-center  bg-gray-200">
+            <Button className="mr-2" onClick={submitHandler}>submit code</Button>
+            <Button className="mr-2" onClick={() => {
                 if (code.id === "") {
                     openNotificationWithIcon('warning', 'Nothing to save', 'Everything up to date')
                     return
@@ -126,9 +126,13 @@ const Editor = () => {
 
                 progressUpdateHandler(selected.no, code.id)
                 openNotificationWithIcon('success', 'Progress saved', 'Your progress has been saved sucessfully')
-
-
             }}>save progress</Button>
+            <Dropdown menu={{ items }}>
+                <Button className="">
+                    {selected.name.split(" ")[0] + " " + selected.name.split(" ")[1]}
+                    <UpOutlined className=" w-5 ml-1 mb-1 text-black" />
+                </Button>
+            </Dropdown>
         </div>
     </div>
 }

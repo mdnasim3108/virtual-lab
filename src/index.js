@@ -20,6 +20,8 @@ import Grades from "./components/pageContents/grades/grades";
 import HomeLayout from "./components/layout/homeLayout";
 import Editor from "./components/pageContents/editor/editor";
 import TeacherDash from "./components/facultyPageContents/teacherDash";
+import ExperimentSubmissions from "./components/facultyPageContents/experimentSubmissions/experimentSubmissions";
+import TeacherExperiments from "./components/facultyPageContents/teacherExperiments/teacherExperiments";
 // import TDashboard from "./components/facultyPageContentspageContents/dashboard/Dashboard";
 
 // import TeacherDashboard from "./components/facultyPageContents/teacherDash";
@@ -105,6 +107,22 @@ const router = createBrowserRouter([
     element: (
       <HomeLayout>
         <TeacherDash />
+      </HomeLayout>
+    ),
+  },
+  {
+    path: "/experimentSubmissions",
+    element: (
+      <HomeLayout>
+        <ExperimentSubmissions />
+      </HomeLayout>
+    ),
+  },
+  {
+    path: "/teacherExperiments",
+    element: (
+      <HomeLayout>
+        < TeacherExperiments />
       </HomeLayout>
     ),
   },

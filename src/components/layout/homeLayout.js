@@ -20,7 +20,7 @@ import { faUsers, faChalkboardUser, faMarker, faCode } from "@fortawesome/free-s
 import { useContext } from "react";
 import userContext from "../../contextStore/context";
 const HomeLayout = (props) => {
-  const {user}=useContext(userContext)
+  const { user, selectedProgressId } = useContext(userContext)
   const studentItems=[
     { label: "Dashboard", key: "/dashboard", icon: <AppstoreOutlined /> },
     { label: "Experiments", key: "/experiments", icon: <CodeOutlined /> },
@@ -48,7 +48,7 @@ const HomeLayout = (props) => {
     },
     {
       label: "Editor",
-      key: "/editor/12345",
+      key: `/editor/${selectedProgressId}`,
       icon: <FontAwesomeIcon icon={faCode} />,
     },
   ];
@@ -56,38 +56,43 @@ const HomeLayout = (props) => {
     { label: "Dashboard", key: "/dashboard", icon: <AppstoreOutlined /> },
     // { label: "teacherinfo", key: "/teacherDash", icon: <CodeOutlined /> },
     {
-      label: "Submissions",
-      key: "/submissions",
+      label: "Students",
+      key: "/students",
       icon: <CheckSquareOutlined />,
     },
     // {label:"courses",key:"/courses",icon:<BookOutlined/>},
-    { label: "profile", key: "/profile", icon: <UserOutlined /> },
+    { label: "Experiments", key: "/teacherExperiments", icon: <UserOutlined /> },
     {
-      label: "Progress",
-      key: "/classMates",
-      icon: <EllipsisOutlined />,
+      label: "Submissions",
+      key: "/experimentSubmissions",
+      icon: <CheckSquareOutlined />,
     },
     {
-      label: "Message",
-      key: "/teachers",
-      icon: <WechatOutlined />,
+      label: "Announcements",
+      key: "/announcements",
+      icon: <CheckSquareOutlined />,
     },
-    {
-      label: "Grades",
-      key: "/grades",
-      icon: <FontAwesomeIcon icon={faMarker} />,
-    },
-    {
-      label: "Editor",
-      key: "/editor/12345",
-      icon: <FontAwesomeIcon icon={faCode} />,
-    },
+    // {
+    //   label: "Message",
+    //   key: "/teachers",
+    //   icon: <WechatOutlined />,
+    // },
+    // {
+    //   label: "Grades",
+    //   key: "/grades",
+    //   icon: <FontAwesomeIcon icon={faMarker} />,
+    // },
+    // {
+    //   label: "Editor",
+    //   key: "/editor/12345",
+    //   icon: <FontAwesomeIcon icon={faCode} />,
+    // },
   ];
   return user?<PrivateRoute>
       <div className="flex  w-full h-[100vh]">
         <div className="flex flex-col">
           <Header />
-          <SideMenu  items={!user.role.name==="Faculty"?studentItems:teacherItems}/>
+        <SideMenu items={user?.role.name === "Faculty" ? teacherItems : studentItems} />
           {/* <SideMenu  items={teacherItems}/> */}
         </div>
 

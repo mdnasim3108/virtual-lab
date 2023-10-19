@@ -84,7 +84,7 @@ const Editor = () => {
             openNotificationWithIcon('warning', 'Output required', 'Run the code atleast once to submit your code')
             return
         }
-        axios.put("http://localhost:1337/api/submissions/1?populate=*", { data: { ...exp, Experiments: updated } }).then((res) => {
+        axios.put(`http://localhost:1337/api/submissions/${user.id}?populate=*`, { data: { Experiments: updated } }).then((res) => {
             console.log(res)
             openNotificationWithIcon('success', 'Work submitted', 'Your work had been submitted sucessfully')
         })

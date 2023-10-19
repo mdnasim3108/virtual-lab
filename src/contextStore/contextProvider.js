@@ -28,7 +28,7 @@ const ContextProvider=(props)=>{
         const id = updated.findIndex((el) => +(el.experiment) === no)
         if (id > 0) updated[id] = { ...updated[id], codeId }
         else updated = [...updated, { experiment: no.toString(), codeId }]
-        const res = await axios.put(`http://localhost:1337/api/progresses/1?populate=*`, { data: { progress: updated } })
+        const res = await axios.put(`http://localhost:1337/api/progresses/${user.id}?populate=*`, { data: { progress: updated } })
         setProgress(res.data.data.attributes.progress)
     }
 
@@ -45,6 +45,7 @@ const ContextProvider=(props)=>{
             `${api}/users?filters[email][$eqi]=${cookies.get("user")}&populate=*`
         );
           setUser(res.data[0]);
+        console.log("id:", res.data[0].id)
         fetchProgress(res.data[0].roll)
     }
 

@@ -30,7 +30,7 @@ const Submissions = () => {
     // axios.get(`${api}/experiments`).then((res) => setExperiments(res.data.data))
   }, [])
   // console.log(data)
-  const submissions = data ? data.data[0].attributes.Experiments.map((sub) => {
+  const submissions = data.data.length ? data.data[0].attributes.Experiments.map((sub) => {
     const id = experiments.findIndex((el) => el.expNo === sub.ExpNo)
     const exp = experiments[id]
     console.log(exp)

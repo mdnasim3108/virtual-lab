@@ -48,7 +48,7 @@ const HomeLayout = (props) => {
     },
     {
       label: "Editor",
-      key: `/editor/${selectedProgressId}`,
+      key: `/editor/${selectedProgressId ? selectedProgressId : "12345"}`,
       icon: <FontAwesomeIcon icon={faCode} />,
     },
   ];

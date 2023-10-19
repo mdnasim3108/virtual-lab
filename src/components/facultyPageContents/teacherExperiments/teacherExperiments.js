@@ -36,6 +36,11 @@ const Experiments = () => {
         setIsModalOpen(false);
     };
     const addExperimentHandler = () => {
+        const { ExperimentNo, Experiment_Name, Description, Due_Date } = formData
+        if (!ExperimentNo.length || !Experiment_Name.length || !Description.length || !Due_Date.length) {
+            openNotificationWithIcon('error', 'All fields required', 'Fill the required fields to add the experiment')
+            return
+        }
         axios.post(`http://localhost:1337/api/experiments`, { data: formData }).then((res) => {
             console.log(formData)
             console.log(res)
@@ -99,20 +104,20 @@ const Experiments = () => {
     const addModalContent = <form>
         <div>
             <label>Experiment Number</label>
-            <Input placeholder="experiment no." id="ExperimentNo" onChange={changeHandler} type="number" value={formData.ExperimentNo} />
+            <Input placeholder="experiment no." id="ExperimentNo" onChange={changeHandler} required type="number" value={formData.ExperimentNo} />
         </div>
 
         <div className="mt-3">
             <label>Experiment Name</label>
-            <Input placeholder="experiment name" id="Experiment_Name" onChange={changeHandler} value={formData.Experiment_Name} />
+            <Input placeholder="experiment name" id="Experiment_Name" onChange={changeHandler} value={formData.Experiment_Name} required />
         </div>
         <div className="mt-3">
             <label>Experiment Description</label>
-            <Input placeholder="experiment description" id="Description" onChange={changeHandler} value={formData.Description} className="py-7" />
+            <Input placeholder="experiment description" id="Description" onChange={changeHandler} value={formData.Description} className="pb-10" required />
         </div>
         <div className="mt-3">
             <label>Experiment Due</label>
-            <Input placeholder="experiment Due date" id="Due_Date" onChange={changeHandler} type="date" value={formData.Due_Date} />
+            <Input placeholder="experiment Due date" id="Due_Date" onChange={changeHandler} type="date" value={formData.Due_Date} required />
         </div>
 
     </form>

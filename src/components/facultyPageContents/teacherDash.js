@@ -1,6 +1,6 @@
 const TeacherDash=()=>{
     return <div>
-        Teacher
+        Teachers dash
     </div>
 }
 export default TeacherDash

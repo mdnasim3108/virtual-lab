@@ -5,33 +5,9 @@ import userContext from "../../../contextStore/context";
 import axios from "axios";
 import useHttp from "../../../hooks/use-http";
 const Submissions = () => {
-  const { user, experiments, setExperiments } = useContext(userContext)
-  const { loading, error, data } = useHttp({ url: `${api}/submissions?filters[roll][$eqi]=${user.roll}&populate=*`, method: "GET" })
-  // useEffect(()=>{
-  //   axios.get(`${api}/submissions?filters[roll][$eqi]=${user.roll}&populate=*`).then((response)=>{
-  //     setSubmissions(response.data.data[0].attributes.Experiments.map((sub)=>{
-  //         const id=experiments.findIndex((el)=>el.expNo===sub.ExpNo)
-  //         const exp=experiments[id]
-  //         console.log(exp)
-  //         return {
-  //           key: sub.ExpNo,
-  //           expId: sub.ExpNo,
-  //           expName: exp.expTitle,
-  //           lastSub: sub.Submitted_Date,
-  //           status:"graded",
-  //           timeliness:new Date(sub.Submitted_Date)<new Date(exp.Due)?"timely":"overdue"
-  //         }
-  //     }))
-  //   })
-  // },[])
-  useEffect(() => {
-    console.log(experiments)
-
-    // axios.get(`${api}/experiments`).then((res) => setExperiments(res.data.data))
-  }, [])
-  // console.log(data)
-  const submissions = data.data.length ? data.data[0].attributes.Experiments.map((sub) => {
-    const id = experiments.findIndex((el) => el.expNo === sub.ExpNo)
+  const { user, experiments, setExperiments,submission } = useContext(userContext)
+  const submissionsData = submission.Experiments.map((sub) => {
+    const id = experiments.findIndex((el) => el.expNo == sub.ExpNo)
     const exp = experiments[id]
     console.log(exp)
     return {
@@ -42,7 +18,7 @@ const Submissions = () => {
       status: "graded",
       timeliness: new Date(sub.Submitted_Date) < new Date(exp.Due) ? "timely" : "overdue"
     }
-  }) : []
+  }) 
   const columns = [
     {
       title: "Experiment Id",
@@ -134,9 +110,9 @@ const Submissions = () => {
     },
   ];
   return (
-    <Spin spinning={loading}>
+    // <Spin spinning={loading}>
       <div className="w-full h-screen pt-[1rem]  bg-gray-100">
-        <Table dataSource={submissions} columns={columns} className="w-[95%] mx-auto" pagination={{
+        <Table dataSource={submissionsData} columns={columns} className="w-[95%] mx-auto" pagination={{
           style: { visibility: "hidden" }
         }}
           scroll={{
@@ -144,7 +120,7 @@ const Submissions = () => {
           }}
         />
       </div>
-    </Spin>
+    // </Spin>
   );
 };
 export default Submissions

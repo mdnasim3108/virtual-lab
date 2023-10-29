@@ -65,41 +65,35 @@ const Experiments = () => {
     const changeHandler = (e) => {
         setData({ ...formData, [e.target.id]: e.target.value })
     }
-    useEffect(() => {
-        if (data) {
-            console.log(progress)
+    // useEffect(() => {
+    //     if (data) {
+    //         console.log(progress)
 
-            console.log(data.data)
+    //         console.log(data.data)
 
-            const experiments = data.data.map((exp) => {
+    //         const experiments = data.data.map((exp) => {
 
-                let code
-                const id = progress.findIndex((el) => el.experiment === exp.attributes.ExperimentNo)
-                console.log(id)
 
-                if (id >= 0) {
-                    code = progress[id].codeId
-                }
-                return {
-                    key: exp.id,
-                    expNo: exp.attributes.ExperimentNo,
-                    expTitle: exp.attributes.Experiment_Name,
-                    expDesc: exp.attributes.Description,
-                    Due: exp.attributes.Due_Date,
-                    // expLink: (
-                    //     <p onClick={() => {
-                    //         setSelected({ name: exp.attributes.Experiment_Name, no: +(exp.id) })
-                    //         setKeys(["/editor"])
-                    //         navigate(`/editor/${code ? code : "12345"}`)
-                    //     }} className="underline cursor-pointer">
-                    //         do Experiment
-                    //     </p>
-                    // ),
-                };
-            });
-            setExperiments(experiments);
-        }
-    }, [data])
+    //             return {
+    //                 key: exp.id,
+    //                 expNo: exp.attributes.ExperimentNo,
+    //                 expTitle: exp.attributes.Experiment_Name,
+    //                 expDesc: exp.attributes.Description,
+    //                 Due: exp.attributes.Due_Date,
+    //                 // expLink: (
+    //                 //     <p onClick={() => {
+    //                 //         setSelected({ name: exp.attributes.Experiment_Name, no: +(exp.id) })
+    //                 //         setKeys(["/editor"])
+    //                 //         navigate(`/editor/${code ? code : "12345"}`)
+    //                 //     }} className="underline cursor-pointer">
+    //                 //         do Experiment
+    //                 //     </p>
+    //                 // ),
+    //             };
+    //         });
+    //         setExperiments(experiments);
+    //     }
+    // }, [data])
 
     const addModalContent = <form>
         <div>

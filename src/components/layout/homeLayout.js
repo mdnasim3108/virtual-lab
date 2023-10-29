@@ -20,7 +20,7 @@ import { faUsers, faChalkboardUser, faMarker, faCode } from "@fortawesome/free-s
 import { useContext } from "react";
 import userContext from "../../contextStore/context";
 const HomeLayout = (props) => {
-  const { user, selectedProgressId } = useContext(userContext)
+  const { user, selectedProgressId,selected } = useContext(userContext)
   const studentItems=[
     { label: "Dashboard", key: "/dashboard", icon: <AppstoreOutlined /> },
     { label: "Experiments", key: "/experiments", icon: <CodeOutlined /> },
@@ -48,7 +48,7 @@ const HomeLayout = (props) => {
     },
     {
       label: "Editor",
-      key: `/editor/${selectedProgressId ? selectedProgressId : "12345"}`,
+      key: `/editor/${selected.no}`,
       icon: <FontAwesomeIcon icon={faCode} />,
     },
   ];

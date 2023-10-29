@@ -161,6 +161,7 @@ const SignUp = () => {
         password: password,
         roll,
         batch: +batch,
+        role:"student",
       });
       toastifySuccess();
       // const user = userCredentials.user;
@@ -224,7 +225,7 @@ const SignUp = () => {
       <div className="loginForm">
         <form onSubmit={onSubmit}>
           <div className="w-[20.5rem] inline-block mr-[0.4rem]">
-            <UserOutlined className="absolute ml-[2rem] mt-[1.3rem] text-lg text-gray-600"/>
+            <UserOutlined className="absolute ml-[2rem] mt-[1.6rem] text-lg text-gray-600"/>
             <input
               id="firstName"
               placeholder="First Name"
@@ -237,7 +238,7 @@ const SignUp = () => {
             />
           </div>
           <div className="w-[20.5rem] inline-block">
-          <UserOutlined className="absolute ml-[2rem] mt-[1.3rem] text-lg text-gray-600"/>
+          <UserOutlined className="absolute ml-[2rem] mt-[1.6rem] text-lg text-gray-600"/>
             <input
               id="lastName"
               placeholder="Last Name"
@@ -349,7 +350,7 @@ const SignUp = () => {
 
           <div>
             <MailOutlined
-              className="absolute ml-[2rem] mt-[1.3rem] text-lg text-gray-600"
+              className="absolute ml-[2rem] mt-[1.6rem] text-lg text-gray-600"
             />
             <input
               id="email"

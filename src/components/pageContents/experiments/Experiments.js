@@ -9,6 +9,7 @@ const Experiments = () => {
   const navigate = useNavigate()
   const { setExperiments, experiments, setKeys, setSelected, progress, addExperiment } = useContext(userContext);
   const { loading, data, error } = useHttp({ url: `${api}/experiments`, method: "GET" })
+  const [expTable,setExpTable]=useState([])
   // useEffect(() => {
   //   if(!experiments.length){
   //   axios.get(`${api}/experiments`).then((res) => {
@@ -31,40 +32,26 @@ const Experiments = () => {
   // }
   // }, []);
   useEffect(() => {
-    if (data) {
-      console.log(progress)
+    if (experiments.length) {
 
-      console.log(data.data)
 
-      const experiments = data.data.map((exp) => {
-
-        let code
-        const id = progress.findIndex((el) => el.experiment === exp.attributes.ExperimentNo)
-        console.log(id)
-
-        if (id >= 0) {
-          code = progress[id].codeId
-        }
+      const tableData = experiments.map((exp) => {
         return {
-          key: exp.id,
-          expNo: exp.id,
-          expTitle: exp.attributes.Experiment_Name,
-          expDesc: exp.attributes.Description,
-          Due: exp.attributes.Due_Date,
+          ...exp,
           expLink: (
             <p onClick={() => {
-              setSelected({ name: exp.attributes.Experiment_Name, no: +(exp.id) })
+              setSelected({ name: exp.expTitle, no: +(exp.expNo) })
               setKeys(["/editor"]) 
-              navigate(`/editor/${code ? code : "12345"}`)
+              navigate(`/editor/${exp.expNo}`)
             }} className="underline cursor-pointer">
               do Experiment
             </p>
           ),
         };
       });
-      setExperiments(experiments);
+      setExpTable(tableData);
     }
-  }, [data])
+  }, [experiments])
 
   const dataSource = [
     {
@@ -162,10 +149,10 @@ const Experiments = () => {
     },
   ];
   return (
-    <Spin spinning={experiments.length === 0}>
+    <Spin spinning={expTable.length === 0}>
       <div className="w-full h-screen pt-[1rem]  bg-gray-100 text-center">
         <Table
-          dataSource={experiments}
+          dataSource={expTable}
           columns={columns}
           className="w-[95%] mx-auto" pagination={{
             style: { visibility: "hidden" },

@@ -4,74 +4,153 @@ import axios from "axios";
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router";
 import { api } from "../constants";
-const ContextProvider=(props)=>{
-
-    const cookies = new Cookies() 
-    const [user,setUser]=useState(null)
-    const [experiments,setExperiments]=useState([])
-    const [keys, setKeys] = useState([window.location.pathname])
-    const [selected, setSelected] = useState({ name: "client server communication", no: 1 })
-    const [progress, setProgress] = useState([])
-    const [selectedProgressId, setSelectedProgressId] = useState("")
-
-
-
-    useEffect(() => {
-        if (selected.no && progress.length) {
-            const index = progress.findIndex((el) => selected.no === +(el.experiment))
-            if (index >= 0) setSelectedProgressId(progress[index].codeId)
-        }
-    }, [selected, progress])
-
-    const progressUpdateHandler = async (no, codeId) => {
-        let updated = [...progress]
-        const id = updated.findIndex((el) => +(el.experiment) === no)
-        if (id > 0) updated[id] = { ...updated[id], codeId }
-        else updated = [...updated, { experiment: no.toString(), codeId }]
-        const res = await axios.put(`http://localhost:1337/api/progresses/${user.id}?populate=*`, { data: { progress: updated } })
-        setProgress(res.data.data.attributes.progress)
+const ContextProvider = (props) => {
+  const cookies = new Cookies();
+  const [user, setUser] = useState(null);
+  const [experiments, setExperiments] = useState([]);
+  const [keys, setKeys] = useState([window.location.pathname]);
+  const [selected, setSelected] = useState({
+    name: "client server communication",
+    no: 1,
+  });
+  const [progress, setProgress] = useState({ id: "", progressData: [] });
+  const [selectedProgressId, setSelectedProgressId] = useState("");
+  const [submission, setSubmission] = useState({ id: "", Experiments: [] });
+  const [students,setStudents]=useState([])
+  useEffect(() => {
+    if (selected.no && progress.length) {
+      const index = progress.findIndex((el) => selected.no === +el.experiment);
+      if (index >= 0) setSelectedProgressId(progress[index].codeId);
     }
+  }, [selected, progress]);
 
-    const fetchProgress = async (roll) => {
-        const res = await axios.get(
-            `${api}/progresses?filters[roll][$eqi]=${roll}&populate=*`
+  const progressUpdateHandler = async (no, codeId) => {
+    let updated = [...progress.progressData];
+    if (progress.progressData.length) {
+      const id = updated.findIndex((el) => +el.experiment === no);
+      if (id >= 0) updated[id] = { ...updated[id], codeId };
+      else updated = [...updated, { experiment: no.toString(), codeId }];
+      console.log(updated);
+      const res = await axios.put(
+        `http://localhost:1337/api/progresses/${progress.id}?populate=*`,
+        { data: { progress: updated } }
+      );
+      setProgress({
+        id: progress.id,
+        progressData: res.data.data.attributes.progress,
+      });
+    } else {
+      axios
+        .post(`http://localhost:1337/api/progresses?populate=*`, {
+          data: {
+            roll: user.roll,
+            progress: [
+              {
+                experiment: no.toString(),
+                codeId,
+              },
+            ],
+          },
+        })
+        .then((res) =>
+          setProgress({
+            id: res.data.data.id,
+            progressData: res.data.data.attributes.progress,
+          })
         );
-        console.log("progress", res)
-        setProgress(res.data.data[0].attributes.progress)
     }
+  };
 
-    const fetchUser=async()=>{
-        const res = await axios.get(
-            `${api}/users?filters[email][$eqi]=${cookies.get("user")}&populate=*`
-        );
-          setUser(res.data[0]);
-        console.log("id:", res.data[0].id)
-        fetchProgress(res.data[0].roll)
+  const fetchProgress = async (roll) => {
+    const res = await axios.get(
+      `${api}/progresses?filters[roll][$eqi]=${roll}&populate=*`
+    );
+    console.log("progress", res);
+    if (res.data.data.length)
+      setProgress({
+        id: res.data.data[0].id,
+        progressData: res.data.data[0].attributes.progress,
+      });
+  };
+
+  const fetchSubmitted = (roll) => {
+    axios
+      .get(`${api}/submissions?filters[roll][$eqi]=${roll}&populate=*`)
+      .then((res) => {
+        if (res.data.data.length)
+          setSubmission({
+            id: res.data.data[0].id,
+            Experiments: res.data.data[0].attributes.Experiments,
+          });
+      });
+  };
+
+  const fetchStudents=()=>{
+    axios.get("http://localhost:1337/api/users?populate=*").then((res)=>setStudents(res.data.filter((user)=>user.role.name!=="Faculty")))
+
+  }
+
+  const fetchExperiments=()=>{
+    axios.get(`${api}/experiments?populate=*`).then((res)=>setExperiments(res.data.data.map((exp)=>{
+      return {
+        key: exp.id,
+                    expNo: exp.attributes.ExperimentNo,
+                    expTitle: exp.attributes.Experiment_Name,
+                    expDesc: exp.attributes.Description,
+                    Due: exp.attributes.Due_Date,
+                    
+      }
+    }))
+    )
+  }
+
+  const fetchUser = async () => {
+    const res = await axios.get(
+      `${api}/users?filters[email][$eqi]=${cookies.get("user")}&populate=*`
+    );
+    console.log(res.data);
+      setUser(res.data[0]);
+      console.log("id:", res.data[0].id);
+      if (!(res.data[0].role.name === "Faculty")) {
+
+      fetchProgress(res.data[0].roll);
+      fetchSubmitted(res.data[0].roll);
+      }
+    else{
+      fetchStudents()
     }
+    fetchExperiments()
+  };
 
-    const contextValues={
-        user,
-        setUser,
-        experiments,
-        setExperiments,
-        keys,
-        setKeys,
-        selected,
-        setSelected,
-        progress,
-        progressUpdateHandler,
-        selectedProgressId,
-        setSelectedProgressId,
+  const contextValues = {
+    user,
+    setUser,
+    experiments,
+    setExperiments,
+    keys,
+    setKeys,
+    selected,
+    setSelected,
+    progress,
+    progressUpdateHandler,
+    selectedProgressId,
+    setSelectedProgressId,
+    submission,
+    setSubmission,
+    students,
+    fetchUser
+  };
+
+  useEffect(() => {
+    if (cookies.get("user")) {
+      fetchUser();
     }
+  }, []);
 
-    useEffect(()=>{
-        if(cookies.get("user")){
-            fetchUser()
-        }
-    },[])
-
-    return <UserContext.Provider value={contextValues}>
-        {props.children}
+  return (
+    <UserContext.Provider value={contextValues}>
+      {props.children}
     </UserContext.Provider>
-}
+  );
+};
 export default ContextProvider;

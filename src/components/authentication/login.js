@@ -17,7 +17,7 @@ import { AiOutlineLock } from "react-icons/ai";
 import userContext from "../../contextStore/context";
 import { useContext } from "react";
 const Login = (props) => {
-  const { setUser } = useContext(userContext);
+  const { setUser,fetchUser } = useContext(userContext);
   const cookies=new Cookies();
   var today = new Date();
   var tomorrow = new Date();
@@ -67,7 +67,8 @@ const Login = (props) => {
             `http://localhost:1337/api/users?filters[email][$eqi]=${email}&populate=*`
           );
           console.log(res.data);
-          setUser(res.data[0]);
+          fetchUser()
+          // setUser(res.data[0]);
           navigate("/dashboard");
         })
         .catch((error) => {
@@ -132,7 +133,7 @@ const Login = (props) => {
           Login to continue
         </h3>
         <form onSubmit={formsubmitHandler} autoComplete="off" className="">
-          <MailOutlined className="absolute ml-[2rem] mt-[1.3rem] text-lg text-gray-600" />
+          <MailOutlined className="absolute ml-[2rem] mt-[1.6rem] text-lg text-gray-600" />
           <input
             id="email"
             type="email"

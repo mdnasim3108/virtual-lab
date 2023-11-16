@@ -7,7 +7,7 @@ import useHttp from "../../../hooks/use-http";
 import { useNavigate } from "react-router";
 const Experiments = () => {
   const navigate = useNavigate()
-  const { setExperiments, experiments, setKeys, setSelected, progress, addExperiment } = useContext(userContext);
+  const { setExperiments, experiments, setKeys, setSelected, progress, addExperiment,submission } = useContext(userContext);
   const { loading, data, error } = useHttp({ url: `${api}/experiments`, method: "GET" })
   const [expTable,setExpTable]=useState([])
   // useEffect(() => {
@@ -34,16 +34,21 @@ const Experiments = () => {
   useEffect(() => {
     if (experiments.length) {
 
-
+      const submittedExperiments=submission.Experiments.map((el)=>el.ExpNo)
+      
       const tableData = experiments.map((exp) => {
+        
         return {
           ...exp,
           expLink: (
             <p onClick={() => {
+              if(submittedExperiments.includes(+(exp.expNo))) return 
               setSelected({ name: exp.expTitle, no: +(exp.expNo) })
               setKeys(["/editor"]) 
               navigate(`/editor/${exp.expNo}`)
-            }} className="underline cursor-pointer">
+              
+              
+            }} className={`underline cursor-pointer ${submittedExperiments.includes(+(exp.expNo))?"opacity-[0.5] cursor-not-allowed":"opacity-[1] cursor-pointer"}`}>
               do Experiment
             </p>
           ),

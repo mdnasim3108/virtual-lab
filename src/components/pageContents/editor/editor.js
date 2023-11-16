@@ -27,12 +27,17 @@ const Editor = () => {
       message,
       description,
     });
-  };
+  };  
 
+  useEffect(()=>{
+      if(experiments.length){
+      const ExpIndex=experiments.findIndex(experiment => experiment.expNo==id)
+      setSelected({name:experiments[ExpIndex].expTitle,no:+(experiments[ExpIndex].expNo)})
+      }
+  },[experiments,selected])
 
   useEffect(() => {
     if(progress.progressData.length){
-    console.log("inside")
     const index = progress.progressData.findIndex((el) => el.experiment == id); 
     if (index >= 0) setcodeid(progress.progressData[index].codeId)
     else setcodeid("12345");
@@ -40,14 +45,16 @@ const Editor = () => {
     else setcodeid("12345");
   }, [progress,id]);
 
-  const items = experiments.map((exp) => {
+
+  const submittedExperiments=submission.Experiments.map((el)=>el.ExpNo)
+
+  const items = experiments.filter(el=>!(submittedExperiments.includes(+(el.expNo)))).map((exp) => {
     return {
       key: exp.key,
       label: (
         <p
           onClick={() => {
-            setSelected({ name: exp.expTitle, no: exp.expNo });
-            // const id = progress.progressData.findIndex((el) => +(el.experiment) === exp.expNo);
+             setSelected({ name: exp.expTitle, no: exp.expNo });
              navigate(`/editor/${exp.expNo}`)
           }}
         >
@@ -57,7 +64,6 @@ const Editor = () => {
     };
   });
   const [code, setCode] = useState({ content: "", id: "" });
-  const [exp, setExp] = useState("");
   const [out, setOut] = useState("");
   window.onmessage = function (e) {
     if (e.data && e.data.language) {

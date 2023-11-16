@@ -24,6 +24,16 @@ const ContextProvider = (props) => {
     }
   }, [selected, progress]);
 
+  useEffect(()=>{
+    if(experiments.length && submission.Experiments.length){
+      const pendingExperiments=experiments.filter(experiment => !(submission.Experiments.map((el)=>el.ExpNo).includes(+(experiment.expNo))))
+      setSelected({
+          name: pendingExperiments[0].expTitle,
+          no: pendingExperiments[0].expNo,
+      })
+    }
+  },[experiments,submission])
+
   const progressUpdateHandler = async (no, codeId) => {
     let updated = [...progress.progressData];
     if (progress.progressData.length) {
@@ -77,11 +87,14 @@ const ContextProvider = (props) => {
     axios
       .get(`${api}/submissions?filters[roll][$eqi]=${roll}&populate=*`)
       .then((res) => {
-        if (res.data.data.length)
+        if (res.data.data.length){
+          console.log(res.data.data[0].attributes.Experiments)
+          
           setSubmission({
             id: res.data.data[0].id,
             Experiments: res.data.data[0].attributes.Experiments,
           });
+        }
       });
   };
 
@@ -108,18 +121,17 @@ const ContextProvider = (props) => {
     const res = await axios.get(
       `${api}/users?filters[email][$eqi]=${cookies.get("user")}&populate=*`
     );
+    fetchExperiments()
     console.log(res.data);
       setUser(res.data[0]);
-      console.log("id:", res.data[0].id);
+      
       if (!(res.data[0].role.name === "Faculty")) {
-
       fetchProgress(res.data[0].roll);
       fetchSubmitted(res.data[0].roll);
       }
     else{
       fetchStudents()
     }
-    fetchExperiments()
   };
 
   const contextValues = {

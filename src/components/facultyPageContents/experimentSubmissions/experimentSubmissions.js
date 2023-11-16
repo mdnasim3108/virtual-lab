@@ -1,4 +1,4 @@
-import { Dropdown, Button, Tag, Table, Spin } from "antd";
+import { Dropdown, Button, Tag, Table, Spin, Modal, Input } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { api } from "../../../constants";
 import axios from "axios";
@@ -8,9 +8,20 @@ import { jsPDF } from "jspdf";
 const ExperimentSubmissions = () => {
   const { experiments, selected, setSelected, students } =
     useContext(userContext);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState({
+    roll: "",
+    name: "",
+    experiment: "",
+    submissionId: "",
+  });
   const [data, setData] = useState([]);
   const [submission, setSubmission] = useState([]);
+  const [formData, setFormData] = useState({
+    observation: "",
+    output: "",
+    viva: "",
+  });
   const items = experiments.map((exp) => {
     return {
       key: exp.key,
@@ -25,6 +36,15 @@ const ExperimentSubmissions = () => {
       ),
     };
   });
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const columns = [
     {
       title: "Roll",
@@ -37,13 +57,13 @@ const ExperimentSubmissions = () => {
       title: "Student Name",
       dataIndex: "Student_Name",
       key: "Student Name",
-      width: "30%",
+      width: "20%",
     },
     {
       title: "Last Submitted",
       dataIndex: "lastSub",
       key: "lastSub",
-      width: "20%",
+      width: "15%",
     },
     {
       title: "Status",
@@ -77,51 +97,103 @@ const ExperimentSubmissions = () => {
       title: "Link",
       key: "Link",
       dataIndex: "Link",
+      width: "10%",
+    },
+    {
+      title: "grading",
+      key: "grading",
+      dataIndex: "grading",
       width: "20%",
     },
   ];
-  //   const dataSource = [
-  //     {
-  //       key: "1",
-  //       Roll: "2018127",
-  //       Student_Name: "mohamed nasim m",
-  //       lastSub: "2023-09-24 15:30:45",
-  //       status: "graded",
-  //       timeliness: "timely",
-  //       Link: <p className="underline cursor-pointer">download link</p>,
-  //     },
-  //     {
-  //       key: "2",
-  //       Roll: "2018125",
-  //       Student_Name: "kulasekarapandian v",
-  //       lastSub: "2023-09-24 15:30:45",
-  //       status: "unGraded",
-  //       timeliness: "timely",
-  //       Link: <p className="underline cursor-pointer">download link</p>,
-  //     },
-  //     {
-  //       key: "1",
-  //       Roll: "2018L18",
-  //       Student_Name: "shameer k",
-  //       lastSub: "2023-09-24 15:30:45",
-  //       status: "unGraded",
-  //       timeliness: "overdue",
-  //       Link: <p className="underline cursor-pointer">download link</p>,
-  //     },
-  //     {
-  //       key: "1",
-  //       Roll: "2018L05",
-  //       Student_Name: "anbarasan m",
-  //       lastSub: "2023-09-24 15:30:45",
-  //       status: "unGraded",
-  //       timeliness: "overdue",
-  //       Link: <p className="underline cursor-pointer">download link</p>,
-  //     },
-  //   ];
-  const pdfGenerateHandler = (code,output,roll,name,experimentName) => {
+  const changeHandler = (e) => {
+    setFormData({ ...formData, [e.target.id]: +e.target.value });
+  };
+  const gradingsHandler = () => {
+    console.log(formData);
+    setFormData({
+      observation: "",
+      output: "",
+      viva: "",
+    });
+    const studentIndex = submission.findIndex(
+      (el) => el.id === selectedData.submissionId
+    );
+    const data = submission[studentIndex].finishedExperiments;
+    const experimentIndex = data.findIndex((el) => el.ExpNo == selected.no);
+    const updated = [...data];
+    updated[experimentIndex] = {
+      ...updated[experimentIndex],
+      ...formData,
+      total: formData.observation + formData.output + formData.viva,
+    };
+    console.log(data);
+    axios
+      .put(`${api}/submissions/${selectedData.submissionId}?populate=*`, {
+        data: { Experiments: updated },
+      })
+      .then((res) => {
+        setSubmission((prev) => {
+          const updatedSubmission = [...prev];
+          updatedSubmission[studentIndex] = {
+            ...updatedSubmission[studentIndex],
+            finishedExperiments: res.data.data.attributes.Experiments,
+          };
+          return updatedSubmission;
+        });
+        handleCancel()
+      });
+  };
+  const addModalContent = (
+    <form>
+      <div className="w-full text-center">
+        <h1 className=" text-xl font-semibold">
+          {selectedData.name}({selectedData.roll})
+        </h1>
+        <h1 className="text-lg ">
+          {selected.no}) {selectedData.experiment}
+        </h1>
+      </div>
+      <div>
+        <label>observation & preparation</label>
+        <Input
+          placeholder="observation"
+          id="observation"
+          onChange={changeHandler}
+          required
+          type="number"
+          value={formData.observation}
+        />
+      </div>
+      <div className="mt-3">
+        <label>output</label>
+        <Input
+          placeholder="output"
+          id="output"
+          onChange={changeHandler}
+          value={formData.output}
+          required
+          type="number"
+        />
+      </div>
+      <div className="mt-3">
+        <label>viva</label>
+        <Input
+          placeholder="viva"
+          id="viva"
+          onChange={changeHandler}
+          type="number"
+          value={formData.viva}
+          required
+        />
+      </div>
+    </form>
+  );
+  const pdfGenerateHandler = (code, output, roll, name, experimentName) => {
     const doc = new jsPDF();
-  
-    doc.text(`
+
+    doc.text(
+      `
                                   ${selected.no}.) ${experimentName}
 
 
@@ -129,7 +201,6 @@ const ExperimentSubmissions = () => {
 
   
     code:
-    
     ${code}
 
 
@@ -140,9 +211,11 @@ const ExperimentSubmissions = () => {
     output:
 
     ${output}
-     `
-    , 10, 10);
-  
+     `,
+      10,
+      10
+    );
+
     doc.save("a4.pdf");
   };
   useEffect(() => {
@@ -184,12 +257,42 @@ const ExperimentSubmissions = () => {
               Roll: el.roll,
               Student_Name: studentData.username,
               lastSub: exp.Submitted_Date,
-              status: "unGraded",
+              status: exp.total ? "graded" : "unGraded",
               timeliness:
                 new Date(exp.Submitted_Date) < new Date(experimentData.Due)
                   ? "timely"
                   : "overdue",
-              Link: <p className="underline cursor-pointer" onClick={()=>pdfGenerateHandler(exp.code,exp.outputContent,el.roll,studentData.username,experimentData.expTitle)}>download link</p>,
+              Link: (
+                <p
+                  className="underline cursor-pointer"
+                  onClick={() =>
+                    pdfGenerateHandler(
+                      exp.code,
+                      exp.outputContent,
+                      el.roll,
+                      studentData.username,
+                      experimentData.expTitle
+                    )
+                  }
+                >
+                  download link
+                </p>
+              ),
+              grading: (
+                <Button
+                  onClick={() => {
+                    setSelectedData({
+                      roll: el.roll,
+                      name: studentData.username,
+                      experiment: experimentData.expTitle,
+                      submissionId: el.id,
+                    });
+                    showModal();
+                  }}
+                >
+                  {exp.total ? "Update marks" : "Assign marks"}
+                </Button>
+              ),
             };
           })
         );
@@ -197,10 +300,23 @@ const ExperimentSubmissions = () => {
         setData(false);
       }
     }
-  }, [selected, submission,experiments]);
+  }, [selected, submission, experiments]);
 
   return (
     <div className="flex flex-col justify-center items-center">
+      <Modal
+        title=""
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={gradingsHandler}>
+            Submit
+          </Button>,
+        ]}
+      >
+        {addModalContent}
+      </Modal>
       <Dropdown menu={{ items }} className="my-5">
         <Button className="">
           {selected.name}
@@ -211,7 +327,7 @@ const ExperimentSubmissions = () => {
       <Table
         dataSource={data}
         columns={columns}
-        className="w-[95%] mx-auto"
+        className="w-[98%] mx-auto"
         pagination={{
           style: { visibility: "hidden" },
         }}

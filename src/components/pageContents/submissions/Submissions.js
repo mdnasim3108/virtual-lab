@@ -8,6 +8,7 @@ const Submissions = () => {
   const { user, experiments, setExperiments,submission } = useContext(userContext)
   const submissionsData = submission.Experiments.map((sub) => {
     const id = experiments.findIndex((el) => el.expNo == sub.ExpNo)
+    console.log(sub)
     const exp = experiments[id]
     console.log(exp)
     return {
@@ -15,7 +16,7 @@ const Submissions = () => {
       expId: sub.ExpNo,
       expName: exp.expTitle,
       lastSub: sub.Submitted_Date,
-      status: "graded",
+      status: sub.output?"graded":"unGraded",
       timeliness: new Date(sub.Submitted_Date) < new Date(exp.Due) ? "timely" : "overdue"
     }
   }) 

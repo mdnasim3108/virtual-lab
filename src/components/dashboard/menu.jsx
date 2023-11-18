@@ -69,7 +69,7 @@ const SideMenu = (props) => {
         cookies.remove("user")
         navigate("/")
       }}
-        className="absolute bottom-5 right-[30%] text-white"
+        className="absolute bottom-5 right-[30%] text-white"          
       >Logout</Button>
     </div>
   );

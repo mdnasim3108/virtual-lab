@@ -74,7 +74,7 @@ const Auth = (props) => {
     e.preventDefault();
     try {
       const { fName, lName, Email, Password, key } = formData;
-      if(key!==process.env.REACT_APP_SECRET_KEY){
+      if(key!==import.meta.env.REACT_APP_VARIABLE){
         setShowInvalid(true)
         return
       }

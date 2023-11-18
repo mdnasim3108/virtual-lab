@@ -15,8 +15,22 @@ const ContextProvider = (props) => {
   });
   const [progress, setProgress] = useState({ id: "", progressData: [] });
   const [selectedProgressId, setSelectedProgressId] = useState("");
-  const [submission, setSubmission] = useState({ id: "", Experiments: [] });
+  const [submission, setSubmission] = useState({ id: "", Experiments: [] }); 
   const [students,setStudents]=useState([])
+
+  const resetProcess=()=>{
+    setUser(null)
+    setExperiments([])
+    setKeys([window.location.pathname])
+    setSelected({
+      name: "client server communication",
+      no: 1,
+    })
+    setProgress({ id: "", progressData: [] })
+    setSelectedProgressId("")
+    setSubmission({ id: "", Experiments: [] })
+    setStudents([])
+  }
   useEffect(() => {
     if (selected.no && progress.length) {
       const index = progress.findIndex((el) => selected.no === +el.experiment);
@@ -70,6 +84,8 @@ const ContextProvider = (props) => {
         );
     }
   };
+
+  
 
   const fetchProgress = async (roll) => {
     const res = await axios.get(

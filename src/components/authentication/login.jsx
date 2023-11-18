@@ -178,7 +178,7 @@ const Login = (props) => {
           <div className="logFormBottom mt-8 flex">
             <button
               className="loginButton font-bold text-xl text-white mr-[5rem]"
-              type="submit"
+              
             >
               LOGIN
             </button>

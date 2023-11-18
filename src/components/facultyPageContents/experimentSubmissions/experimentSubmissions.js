@@ -216,7 +216,7 @@ const ExperimentSubmissions = () => {
       10
     );
 
-    doc.save("a4.pdf");
+    doc.save(`${roll}.pdf`);
   };
   useEffect(() => {
     axios.get(`${api}/submissions?populate=*`).then((res) =>

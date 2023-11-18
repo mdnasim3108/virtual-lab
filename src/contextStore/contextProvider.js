@@ -124,8 +124,8 @@ const ContextProvider = (props) => {
     fetchExperiments()
     console.log(res.data);
       setUser(res.data[0]);
-      
-      if (!(res.data[0].role.name === "Faculty")) {
+      console.log(res.data[0])
+      if (!(res.data[0].userRole === "Faculty")) {
       fetchProgress(res.data[0].roll);
       fetchSubmitted(res.data[0].roll);
       }

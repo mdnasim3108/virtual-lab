@@ -161,7 +161,7 @@ const Editor = () => {
           id="oc-editor"
           frameBorder="0"
           height="450px"
-          src={`https://onecompiler.com/embed/python${codeid==="12345"?"":"/"+codeid}?codeChangeEvent=true&disableCopyPaste=true&hideTitle=true&hideNew=true&listenToEvents=true`}
+          src={`https://onecompiler.com/embed/python${codeid==="12345"?"":"/"+codeid}?codeChangeEvent=true&hideTitle=true&listenToEvents=true`}
           width="100%"
           className="h-full"
         ></iframe>

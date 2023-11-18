@@ -123,8 +123,7 @@ const Login = (props) => {
     setFormIsValid(emailIsValid && passIsValid);
   }, [emailIsValid, passIsValid]);
   return (
-    <Fragment>
-      <div className="logForm pr-[3rem] mt-8">
+      <div className="logForm  pr-[3rem] mt-8 lg:w-[50%] w-full">
         <h1 className="text-4xl font-bold">Welcome Back!</h1>
         <h3
           className="text-xl mt-[1rem] font-semibold mb-[3rem]"
@@ -133,7 +132,7 @@ const Login = (props) => {
           Login to continue
         </h3>
         <form onSubmit={formsubmitHandler} autoComplete="off" className="">
-          <MailOutlined className="absolute ml-[2rem] mt-[1.6rem] text-lg text-gray-600" />
+          <MailOutlined className="absolute ml-[2rem] mt-[1.2rem] text-lg text-gray-600" />
           <input
             id="email"
             type="email"
@@ -199,7 +198,6 @@ const Login = (props) => {
           </div> */}
         </div>
       </div>
-    </Fragment>
   );
 };
 export default Login;

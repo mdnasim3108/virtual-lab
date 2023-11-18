@@ -92,7 +92,7 @@ const HomeLayout = (props) => {
       <div className="flex  w-full h-[100vh]">
         <div className="flex flex-col">
           <Header />
-        <SideMenu items={user?.role.name === "Faculty" ? teacherItems : studentItems} />
+        <SideMenu items={user?.userRole === "Faculty" ? teacherItems : studentItems} />
           {/* <SideMenu  items={teacherItems}/> */}
         </div>
 

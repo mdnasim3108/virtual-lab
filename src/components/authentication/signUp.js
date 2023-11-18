@@ -5,12 +5,12 @@ import "react-phone-number-input/style.css";
 import "./login.css";
 import { AiFillEyeInvisible, AiFillEye, AiOutlineLock } from "react-icons/ai";
 import axios from "axios";
-import {GrGroup} from "react-icons/gr"
+import { GrGroup } from "react-icons/gr";
 import { api } from "../../constants";
 import { DownOutlined } from "@ant-design/icons";
 import nameIcon from "../../assets/iconName.png";
-import { UserOutlined,MailOutlined } from "@ant-design/icons";
-import { faHashtag,faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { UserOutlined, MailOutlined } from "@ant-design/icons";
+import { faHashtag, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import {
   faUser,
   faLock,
@@ -31,7 +31,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-const SignUp = () => {
+const SignUp = (props) => {
   const toastifySuccess = () => {
     toast.success("Successfully SignedIn !!", {
       position: "top-right",
@@ -161,23 +161,10 @@ const SignUp = () => {
         password: password,
         roll,
         batch: +batch,
-        role:"student",
+        userRole:"student"
       });
       toastifySuccess();
-      // const user = userCredentials.user;
-      // console.log(user);
-      // if (user) {
-      //   updateProfile(auth.currentUser, {
-      //     displayName: user.displayName,
-      //     photoURL: user.photoURL,
-      //   });
-      // }
-      // console.log(user.uid);
-      // const formDatacopy = { ...formData, phoneNumber: value };
-      // console.log(formDatacopy);
-      // delete formDatacopy.password;
-      // delete formDatacopy.confirmPassword;
-      // console.log("Details updated ");
+      
     } catch (error) {
       console.log(error);
       toastifyFailure();
@@ -221,185 +208,102 @@ const SignUp = () => {
   };
 
   return (
-    <Fragment>
-      <div className="loginForm">
-        <form onSubmit={onSubmit}>
-          <div className="w-[20.5rem] inline-block mr-[0.4rem]">
-            <UserOutlined className="absolute ml-[2rem] mt-[1.6rem] text-lg text-gray-600"/>
+    <div className="loginForm lg:w-[50%] w-full  h-full">
+      <form onSubmit={onSubmit} className="w-full h-[95%]  flex flex-col justify-center">
+        
+        <div className="flex justify-between h-[12%] mb-[2%]">
+          <div className="w-[49.5%]  h-full">
+            <UserOutlined className="absolute ml-[2rem] mt-[1rem] text-lg text-gray-600" />
             <input
               id="firstName"
               placeholder="First Name"
               name="FirstName"
               value={firstName}
-              className="pl-[4rem] py-5   mb-[1rem]  border-2  border-violet-700 focus:border-green-500 authip w-full "
+              className="pl-[4rem]    mb-[1rem]  border-2  border-violet-700 focus:border-green-500 authip w-full h-full"
               style={{ fontSize: "1.1rem" }}
               onChange={formChange}
               required
             />
           </div>
-          <div className="w-[20.5rem] inline-block">
-          <UserOutlined className="absolute ml-[2rem] mt-[1.6rem] text-lg text-gray-600"/>
+          <div className="w-[49.5%] inline-block h-full">
+            <UserOutlined className="absolute ml-[2rem] mt-[1rem] text-lg text-gray-600" />
             <input
               id="lastName"
               placeholder="Last Name"
               name="LastName"
               value={lastName}
-              className="pl-[4rem] py-5  border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full"
+              className="pl-[4rem]   border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
               style={{ fontSize: "1.1rem" }}
               onChange={formChange}
               required
             />
           </div>
+        </div>
 
-          {/* <div>
-            <FontAwesomeIcon
-              icon={faBuilding}
-              className="absolute ml-[2rem] mt-[1.7rem] text-xl"
-            />
-            <input
-              id="companyCode"
-              value={companyCode}
-              name="CompanyCode"
-              placeholder="Company Code"
-              className="pl-[4rem] py-5 inline mr-[0.4rem]  border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-[20.5rem]"
-              style={{ fontSize: "1.1rem" }}
-              onChange={formChange}
-              required
-            />
-            <select
-              id="companyPosition"
-              value = {companyPosition}
-              class="mb-[1rem] authip border-2  border-violet-700 focus:border-green-500 text-gray-500 text-sm  focus:ring-blue-500  py-5 pl-[4rem]  dark:focus:ring-blue-500 dark:focus:border-blue-500 inline w-[20.5rem]"
-              style={{ fontSize: "1.1rem" }}
-              onChange={formChange}
-            >
-              <option selected>Designation</option>
-              <option value="Owner">Owner</option>
-              <option value="Manager">Manager</option>
-              <option value="Employee">Employee</option>
-              <option value="Entrepreneur">Entrepreneur</option>
-              <option value="Others">Others</option>
-            </select>
-          </div> */}
-
-          {/* <PhoneInput
-            defaultCountry="IN"
-            value={value}
-            onChange={setValue}
-            placeholder="Enter phone number"
-            className="sm:mb-[1rem]"
+        <div className="w-full h-[12%] mb-[2%]">
+          <FontAwesomeIcon
+            icon={faHashtag}
+            className="absolute ml-[2rem] mt-[1.7rem] text-lg text-gray-600"
           />
-              <div className="sm:flex sm:h-0 sm:justify-end sm:relative sm:bottom-[6.5rem]">
-            <button
-              onClick={getOtp}
-              style={{
-                backgroundColor: "black",
-                color: "white",
-                fontSize: "20px",
-                margin: "10px 0px",
-                cursor: "pointer",
+          <input
+            id="roll"
+            value={roll}
+            name="roll"
+            placeholder="Enter Your Roll number"
+            className="pl-[4rem]  block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
+            style={{ fontSize: "1.1rem" }}
+            onChange={formChange}
+            required
+          />
+        </div>
+
+        <div className="w-full h-[12%] mb-[2%]">
+          <MailOutlined className="absolute ml-[2rem] mt-[1.1rem] text-lg text-gray-600" />
+          <input
+            id="email"
+            value={email}
+            name="Email"
+            placeholder="Enter Your Email"
+            className="pl-[4rem]  block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
+            style={{ fontSize: "1.1rem" }}
+            onChange={formChange}
+            required
+          />
+        </div>
+        <div className=" h-0 flex justify-end pr-[2rem] ">
+          {!showPassword ? (
+            <AiFillEye
+              className="text-[1.5rem] text-violet-800 relative top-[1.55rem] cursor-pointer"
+              onClick={() => {
+                setShowPassword((prev) => !prev);
               }}
-              className="rounded-md px-[30px] pt-[40px] pb-[7px] sm:pb-[37px] w-full sm:w-auto"
-            >
-              <p className="relative bottom-4">Get OTP</p>
-            </button>
-          </div> */}
-          {/* <div id="recaptcha-container" /> */}
-
-          {/* <div>
-            <input
-              type="text"
-              className="pl-[4rem] py-5 block border-2  border-violet-700 focus:border-green-500 sm:mb-[1rem] authip w-full"
-              style={{ fontSize: "1.1rem" }}
-              placeholder="Enter the OTP"
-              onChange={(e) => setOtp(e.target.value)}
             />
-          </div>
-          <div className="sm:flex sm:h-0 sm:justify-end sm:relative sm:bottom-[6rem]">
-            <button
-              onClick={verifyOtp}
-              style={{
-                backgroundColor: "black",
-                color: "white",
-                fontSize: "18px",
-                margin: "10px 0px",
-                cursor: "pointer",
+          ) : (
+            <AiFillEyeInvisible
+              className="text-[1.5rem] text-violet-800 relative top-[1.55rem] cursor-pointer"
+              onClick={() => {
+                setShowPassword((prev) => !prev);
               }}
-              className="rounded-md w-full sm:w-auto px-[26px] pt-[40px] pb-[7px] sm:pb-[30px]"
-            >
-              <p className="relative bottom-[1.2rem]">Verify OTP</p>
-            </button>
-          </div> */}
-
-          <div>
-            <FontAwesomeIcon
-              icon={faHashtag}
-              className="absolute ml-[2rem] mt-[1.7rem] text-lg text-gray-600"
             />
-            <input
-              id="roll"
-              value={roll}
-              name="roll"
-              placeholder="Enter Your Roll number"
-              className="pl-[4rem] py-5 block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-[41.4rem]"
-              style={{ fontSize: "1.1rem" }}
-              onChange={formChange}
-              required
-            />
-          </div>
-
-          <div>
-            <MailOutlined
-              className="absolute ml-[2rem] mt-[1.6rem] text-lg text-gray-600"
-            />
-            <input
-              id="email"
-              value={email}
-              name="Email"
-              placeholder="Enter Your Email"
-              className="pl-[4rem] py-5 block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-[41.4rem]"
-              style={{ fontSize: "1.1rem" }}
-              onChange={formChange}
-              required
-            />
-          </div>
-          <div className=" h-0 flex justify-end pr-[2rem]">
-            {!showPassword ? (
-              <AiFillEye
-                className="text-[1.5rem] text-violet-800 relative top-[1.55rem] cursor-pointer"
-                onClick={() => {
-                  setShowPassword((prev) => !prev);
-                }}
-              />
-            ) : (
-              <AiFillEyeInvisible
-                className="text-[1.5rem] text-violet-800 relative top-[1.55rem] cursor-pointer"
-                onClick={() => {
-                  setShowPassword((prev) => !prev);
-                }}
-              />
-            )}
-          </div>
-          <div>
-            
-            <AiOutlineLock
-              className="absolute ml-[2rem] mt-[1.7rem] text-2xl text-gray-600"
-            />
-            <input
-              id="password"
-              name="Password"
-              type={!showPassword ? "password" : "text"}
-              value={password}
-              minLength="6"
-              placeholder="Enter Your Password"
-              className="pl-[4rem] py-5 block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-[41.4rem]"
-              style={{ fontSize: "1.1rem" }}
-              onChange={formChange}
-              required
-            />
-          </div>
-          <div>
-            {/* <FontAwesomeIcon
+          )}
+        </div>
+        <div className="w-full h-[12%] mb-[2%]">
+          <AiOutlineLock className="absolute ml-[2rem] mt-[1.3rem] text-2xl text-gray-600" />
+          <input
+            id="password"
+            name="Password"
+            type={!showPassword ? "password" : "text"}
+            value={password}
+            minLength="6"
+            placeholder="Enter Your Password"
+            className="pl-[4rem]  block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
+            style={{ fontSize: "1.1rem" }}
+            onChange={formChange}
+            required
+          />
+        </div>
+        <div className="w-full h-[12%] mb-[2%]">
+          {/* <FontAwesomeIcon
               icon={faCheck}
               className="absolute ml-[2rem] mt-[1.7rem] text-xl text-red-600"
               style={isEqual ? { color: "green" } : {}}
@@ -423,34 +327,39 @@ const SignUp = () => {
             >
               Passwords don't match
             </p> */}
-            <GrGroup  className="absolute ml-[2rem] mt-[1.4rem] text-lg text-gray-300"/>
-            <div className=" h-0 flex justify-end pr-[2rem]">
-              <DownOutlined className="text-[1.3rem] text-violet-800 relative top-[1.4rem] cursor-pointer" />
-            </div>
-            <select
-              id="batch"
-              class="mb-[1rem] custom-select authip border-2  border-violet-700 focus:border-green-500 text-gray-500 text-sm  focus:ring-blue-500  py-5 pl-[4rem]  dark:focus:ring-blue-500 dark:focus:border-blue-500 inline w-full"
-              style={{ fontSize: "1.1rem" }}
-              onChange={formChange}
-            >
-              <option selected value="1">
-                Batch 1
-              </option>
-              <option value="2">Batch 2</option>
-            </select>
+          <GrGroup className="absolute ml-[2rem] mt-[1.6rem] text-lg text-gray-300" />
+          <div className=" h-0 flex justify-end pr-[2rem]">
+            <DownOutlined className="text-[1.3rem] text-violet-800 relative top-[1.4rem] cursor-pointer" />
           </div>
-          <div
-            className="logFormBottom mt-2 flex"
-            style={{ justifyContent: "center" }}
+          <select
+            id="batch"
+            class=" custom-select authip border-2  border-violet-700 focus:border-green-500 text-gray-500 text-sm  focus:ring-blue-500   pl-[4rem]  dark:focus:ring-blue-500 dark:focus:border-blue-500 inline w-full h-full"
+            style={{ fontSize: "1.1rem" }}
+            onChange={formChange}
           >
-            <button className="loginButton font-bold text-xl text-white">
-              Sign Up
-            </button>
-          </div>
-          <ToastContainer />
-        </form>
-      </div>
-    </Fragment>
+            <option selected value="1">
+              Batch 1
+            </option>
+            <option value="2">Batch 2</option>
+          </select>
+        </div>
+        <div
+          className="logFormBottom mt-2 flex"
+          style={{ justifyContent: "flex-start" }}
+        >
+          <button className="loginButton font-bold text-xl text-white mr-4">
+            Sign Up
+          </button>
+          <p
+              className="fgPass text-lg mt-[1.6rem] hover:text-violet-700 transition-all duration-150 ease-in-out cursor-pointer"
+              onClick={props.click}
+            >
+              Register as Faculty
+            </p>
+        </div>
+        <ToastContainer />
+      </form>
+    </div>
   );
 };
 export default SignUp;

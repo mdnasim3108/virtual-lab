@@ -19,7 +19,7 @@ const ForgotForm = (props) => {
     }
   };
   return (
-    <div className="lg:w-[50%] w-full flex flex-col items-center justify-center">
+    <div className="lg:w-[50%] w-full h-full flex flex-col items-center justify-center">
       <div className="lg:w-[70%] w-full">
         <form onSubmit={forgotSubmitHandler} className="">
           <label className="text-lg text-center">

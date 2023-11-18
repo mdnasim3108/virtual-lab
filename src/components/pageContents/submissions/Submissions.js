@@ -76,40 +76,6 @@ const Submissions = () => {
 
     },
   ];
-  const dataSource = [
-    {
-      key: "1",
-      expId: "1",
-      expName: "sum of two numbers",
-      lastSub: "2023-09-24 15:30:45",
-      status: "graded",
-      timeliness: "timely"
-    },
-    {
-      key: "2",
-      expId: "2",
-      expName: "Palindrome",
-      lastSub: "2023-09-24 15:30:45",
-      status: "unGraded",
-      timeliness: "timely"
-    },
-    {
-      key: "3",
-      expId: "3",
-      expName: "Substring extraction",
-      lastSub: "2023-09-24 15:30:45",
-      status: "graded",
-      timeliness: "overdue"
-    },
-    {
-      key: "4",
-      expId: "4",
-      expName: "right rotation of array",
-      lastSub: "2023-09-24 15:30:45",
-      status: "unGraded",
-      timeliness: "timely"
-    },
-  ];
   return (
     // <Spin spinning={loading}>
       <div className="w-full h-screen pt-[1rem]  bg-gray-100">
